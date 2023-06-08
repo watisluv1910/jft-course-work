@@ -1,6 +1,6 @@
-# KLV Project
+# The Sun Reader Project
 
-KLV Project is a full-stack web application developed as a study project. It serves as a news aggregator, combining a React frontend, a Spring Boot backend, and a MySQL database to provide users with a seamless news browsing experience.
+"The Sun Reader" project is a full-stack web application developed as a study project. It serves as a news aggregator, combining a React frontend, a Spring Boot backend, and a MySQL database to provide users with a seamless news browsing experience.
 
 ## Features
 
@@ -18,11 +18,11 @@ KLV Project is a full-stack web application developed as a study project. It ser
 **Docker:** Containerization and deployment  
 **HTTP Client:** Axios  
 **Version Control:** Git  
-**IDE:** IntelliJ IDEA (Java), Visual Studio Code (React)
+**IDE:** IntelliJ IDEA (Java), WebStorm (React)
 
 ## Getting Started
 
-To get started with the KLV Project, follow these steps:
+To get started with the "The Sun Reader" project, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Make sure you have Docker installed.
@@ -48,17 +48,9 @@ The project has the following folder structure:
 
 ## Contributing
 
-Contributions to the KLV Project are welcome! This project is designed for study purposes, so if you find any bugs, issues, or have any suggestions, please open an issue or submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
-## Acknowledgements
-
-The KLV Project team would like to thank all the contributors for their hard work and dedication.
+Contributions to the project are welcome! This project is designed for study purposes, so if you find any bugs, issues, or have any suggestions, please open an issue or submit a pull request.
 
 ## Contact
 
-For any inquiries or questions, please contact the project team at klvproject@gmail.com.
+For any inquiries or questions, please contact us at nasevich.vlasd.03@gmail.com.
 
