@@ -44,7 +44,7 @@ export const App = () => {
     }, []);
 
     const logout = () => {
-        AuthService.logout();
+        AuthService.logout().then((res) => console.log(res.message));
         setShowModeratorBoard(false);
         setShowAdminBoard(false);
         setCurrentUser(undefined);
@@ -57,6 +57,12 @@ export const App = () => {
                 <GlobalStyle />
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
+                        <img
+                            src="../src/assets/icons/sun-favicon-round.png"
+                            alt="Sun Icon"
+                            className="mr-2"
+                            style={{height: '30px', paddingRight: '10px'}}
+                        />
                         <Link to={'/'} className="navbar-brand">
                             The Sun News Stories
                         </Link>
@@ -125,6 +131,7 @@ export const App = () => {
                             </div>
                         )}
                     </nav>
+
 
                     <div className="container mt-3">
                         <Routes>

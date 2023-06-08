@@ -10,6 +10,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller responsible for handling operations related to bookmarks.
+ * Handles requests to add, delete and fetch user's bookmarks.
+ * All operations require the user to be authenticated.
+ */
 @RestController
 @PreAuthorize("hasRole('USER')")
 @RequestMapping("/api/user")
@@ -18,6 +23,13 @@ public class BookmarkController {
 
     private final UserBookmarkService userBookmarkService;
 
+    /**
+     * Handle the request to add a bookmark for the authenticated user.
+     *
+     * @param request The {@link com.app.springbackend.payload.request.AddBookmarkRequest} payload containing details of the article to be bookmarked.
+     * @param userDetails The {@link com.app.springbackend.security.services.UserDetailsImpl} object containing authenticated user's details.
+     * @return {@link org.springframework.http.ResponseEntity} with HTTP status code 201 (CREATED) if the operation is successful.
+     */
     @PostMapping("/bookmarks/add")
     public ResponseEntity<?> addBookmark(
             @RequestBody AddBookmarkRequest request,
@@ -29,6 +41,13 @@ public class BookmarkController {
         );
     }
 
+    /**
+     * Handle the request to delete a bookmark for the authenticated user.
+     *
+     * @param bookmarkId The ID of the bookmark to be deleted.
+     * @param userDetails The {@link com.app.springbackend.security.services.UserDetailsImpl} object containing authenticated user's details.
+     * @return {@link org.springframework.http.ResponseEntity} with HTTP status code 204 (NO CONTENT) if the operation is successful.
+     */
     @DeleteMapping("/bookmarks/delete/{bookmarkId}")
     public ResponseEntity<?> deleteBookmark(
             @PathVariable Long bookmarkId,
@@ -40,9 +59,15 @@ public class BookmarkController {
         );
     }
 
+    /**
+     * Handle the request to fetch all bookmarks for the authenticated user.
+     *
+     * @param userDetails The {@link com.app.springbackend.security.services.UserDetailsImpl} object containing authenticated user's details.
+     * @return {@link org.springframework.http.ResponseEntity} with HTTP status code 200 (OK) and list of bookmarks belonging to the user.
+     */
     @GetMapping("/bookmarks")
     public ResponseEntity<?> getAllBookmarks(
-        @AuthenticationPrincipal UserDetailsImpl userDetails
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         return new ResponseEntity<>(
                 userBookmarkService.findAllByUserId(userDetails.getId()),
