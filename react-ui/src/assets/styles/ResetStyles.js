@@ -92,7 +92,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   .navbar {
-    padding: 10px 20px;
+    padding: 2px 20px;
 
     a, a:visited {
       color: var(--bs-navbar-brand-color);
