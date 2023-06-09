@@ -1,5 +1,3 @@
-// const webpack = require('webpack'); // Webpack itself
-
 const path = require('path'); // Built-in Node library to define paths to files
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -27,7 +25,7 @@ module.exports = {
     module: {
         rules: [
             { // Rule for JS
-                test: /.*\.test\.(js|jsx)$/, // Where to search
+                test: /\.(js|jsx)$/, // Where to search
                 exclude: /node_modules/, // Where not to search
                 use: ['babel-loader'], // Array of loaders
             },
