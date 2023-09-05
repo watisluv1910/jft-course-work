@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const {createProxyMiddleware} = require('http-proxy-middleware');
 
 const app = express();
 
@@ -14,6 +15,13 @@ if (process.env.NODE_ENV === 'development') {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../build')));
+app.use(
+    '/api',
+    createProxyMiddleware({
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+    }),
+);
 
 /* Server Initialization */
 app.get('/',

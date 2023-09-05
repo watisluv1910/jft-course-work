@@ -2,12 +2,14 @@ package com.app.springbackend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Configures Cross-Origin Resource Sharing (CORS) for the web application.
  */
 @Configuration
+@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
     /**
@@ -19,10 +21,10 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
-                .maxAge(3600)
+        registry.addMapping("/api/**")
+                .allowedOriginPatterns("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .maxAge(1800)
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }

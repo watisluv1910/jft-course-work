@@ -14,6 +14,7 @@ import {BoardUser} from './components/BoardUser';
 import {BoardAdmin} from './components/BoardAdmin';
 import {BookmarkService} from './services/bookmark.service';
 import {BookmarksContext} from './contexts/useBookmarksContext';
+import sunIcon from './assets/icons/sun_favicon_round.png';
 // import AuthVerify from './common/AuthVerify';
 
 export const App = () => {
@@ -59,7 +60,7 @@ export const App = () => {
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <img
-                            src="../src/assets/icons/sun-favicon-round.png"
+                            src={sunIcon}
                             alt="Sun Icon"
                             className="mr-2"
                             style={{height: '30px', paddingRight: '10px'}}

@@ -2,9 +2,8 @@ package com.app.springbackend.payload.request;
 
 import lombok.*;
 
+@Data
 @Builder
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
