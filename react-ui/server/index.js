@@ -12,8 +12,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /* App Config */
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(
     '/api',
@@ -22,9 +20,16 @@ app.use(
         changeOrigin: true,
     }),
 );
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 /* Server Initialization */
-app.get('/',
-    (req, res) => res.sendFile(path.join(__dirname, '../src/index.html')));
+app.get('*',
+    (_,
+     res) =>
+        res.sendFile(
+            path.resolve(__dirname, 'client', 'build', '../public/index.html'),
+        ),
+    );
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server initialized on: http://localhost:${port} // ${new Date()}`));

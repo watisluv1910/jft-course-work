@@ -1,8 +1,9 @@
 {
   "name": "react-ui",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node server/index.js",
@@ -10,7 +11,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Watisluv",
   "license": "ISC",
   "dependencies": {
     "@testing-library/react": "^14.0.0",
