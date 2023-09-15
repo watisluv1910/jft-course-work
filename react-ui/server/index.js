@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const {createProxyMiddleware} = require('http-proxy-middleware');
+require('dotenv').config({
+    path: '../.env',
+    override: false,
+});
 
 const app = express();
 
@@ -16,7 +20,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 app.use(
     '/api',
     createProxyMiddleware({
-        target: 'http://localhost:8080',
+        target: `http://${process.env.SPRING_SERVER}:8080`,
         changeOrigin: true,
     }),
 );
@@ -32,4 +36,4 @@ app.get('*',
         ),
     );
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server initialized on: http://localhost:${port} // ${new Date()}`));
+app.listen(port, () => console.log(`Server initialized on: http://${process.env.REACT_SERVER}:${port} // ${new Date()}`));
