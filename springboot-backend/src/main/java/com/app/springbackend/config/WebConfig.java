@@ -6,16 +6,15 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Configures Cross-Origin Resource Sharing (CORS) for the web application.
+ * Configures Cross-Origin Resource Sharing (CORS) for the application.
  */
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
     /**
-     * Adds CORS mappings for the entire application, allowing all origin patterns and HTTP methods.
-     * The maximum age for preflight requests is set to 3600 seconds (1 hour).
-     * This configuration also allows all headers and credentials.
+     * Adds CORS mappings for the entire application, allows all headers and credentials.
+     * The maximum age for pre-flight requests - 1800 seconds.
      *
      * @param registry the {@link CorsRegistry} to add mappings to.
      */
