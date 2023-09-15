@@ -60,14 +60,18 @@ or [MySQL Workbench](https://www.mysql.com/products/workbench/) to execute datab
 initial script from [/mysql-database](./mysql-database) directory.
 5. Execute **the main class** of a Spring Boot Server application through your IDE
 or open a terminal in a root directory and run the following commands (insert the [current project version](#the-sun-reader-project)):
+   
    ```shell
    mvn clean package
    java -jar springboot-backend/target/spring-backend-<version>-SNAPSHOT.jar fully.qualified.package.Application 
    ```
+   
 6. Go to [/react-ui](./react-ui) directory and execute the following code:
+
    ```shell
    npm run start
    ```
+   
 7. Access the application in your browser at http://localhost:3000.
 
 ### Coding Rules
