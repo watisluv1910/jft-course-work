@@ -1,18 +1,10 @@
-FROM node:alpine AS build
-WORKDIR /app-client
+FROM node:alpine
+WORKDIR /usr/src/app-client
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json ./
+
 RUN npm install
 
 COPY . .
-RUN npm build
-RUN npm run
 
-FROM httpd:alpine
-
-COPY --from=build /app-client/build /usr/local/apache2/htdocs/
-
-EXPOSE 80
-
-CMD ["httpd", "-D", "FOREGROUND"]
+CMD ["npm", "run", "start"]

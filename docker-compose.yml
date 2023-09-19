@@ -5,51 +5,52 @@ services:
 
   # App backend service
   app-server:
-    container_name: klv-project_app-server
+    container_name: app-server
     build:
       context: springboot-backend
       dockerfile: Dockerfile
     ports:
-      - '${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}'
+      - '${SPRING_LOCAL_PORT:?error}:${SPRING_DOCKER_PORT:?error}'
     restart: no
     depends_on:
       app-db:
         condition: service_healthy
     environment:
       DB_SCHEMA: $DB_SCHEMA
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
-      DB_SERVER: klv-project_app-db
-      DB_PORT: $DB_DOCKER_PORT
+      DB_SERVER: app-db
+      DB_DEFAULT_PORT: $DB_DOCKER_PORT
+      DB_LOCAL_USER: $DB_DOCKER_USER
+      DB_LOCAL_PASSWORD: $DB_DOCKER_PASSWORD
     networks:
       - backend
       - frontend
 
   # App frontend service
   app-client:
-    container_name: klv-project_app-client
+    container_name: app-client
     hostname: sun.klv.com # TODO: Change before deployment
     build:
       context: react-ui
       dockerfile: Dockerfile
-      args:
-        API_BASE_URL: 'http://localhost:${SPRING_DOCKER_PORT}/api'
     ports:
-      - '${REACT_LOCAL_PORT}:${REACT_DOCKER_PORT}'
+      - '${REACT_LOCAL_PORT:?error}:${REACT_DOCKER_PORT:?error}'
     restart: no
     depends_on:
       - app-server
+    environment:
+      REACT_SERVER: app-client
+      SPRING_SERVER: app-server
     networks:
       - frontend
 
   # Database service (Mysql)
   app-db:
-    container_name: klv-project_app-db
+    container_name: app-db
     build:
       context: mysql-database
       dockerfile: Dockerfile
     ports:
-      - '${DB_LOCAL_PORT}:${DB_DOCKER_PORT}'
+      - '${DB_LOCAL_PORT:?error}:${DB_DOCKER_PORT:?error}'
     restart: no
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-u", "root", "-proot" ]
@@ -60,9 +61,9 @@ services:
       - db-data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: $DB_SCHEMA
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_USER: $DB_DOCKER_USER
+      MYSQL_PASSWORD: $DB_DOCKER_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_DOCKER_ROOT_PASSWORD
     networks:
       - backend
 

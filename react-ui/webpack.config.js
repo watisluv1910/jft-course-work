@@ -82,7 +82,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
+                test: /\.(png|jpe?g|gif|webp)$/i,
                 use: [
                     {
                         loader: 'file-loader',
@@ -104,7 +104,7 @@ module.exports = {
         new HtmlWebpackPlugin({ // Connects built JS with HTML file
             title: 'The Sun News',
             template: './src/index.html',
-            favicon: './src/assets/icons/sun-favicon-round.png',
+            favicon: './src/assets/icons/sun_favicon_round.png',
         }),
         new MiniCssExtractPlugin({
             filename: production ?
@@ -119,5 +119,6 @@ module.exports = {
         port: 3001,
         hot: true, // Helps to keep state in React and change only edited code
     },
+    devtool: 'source-map',
     mode: production ? 'production' : 'development',
 };

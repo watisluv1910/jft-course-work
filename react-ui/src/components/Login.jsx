@@ -78,7 +78,6 @@ export const Login = () => {
                     alt="profile-img"
                     className="profile-img-card"
                 />
-
                 <Form onSubmit={handleLogin} ref={form}>
                     <div>
                         <div className="form-group">
@@ -86,7 +85,7 @@ export const Login = () => {
                             <Input
                                 type="text"
                                 className="form-control"
-                                name="username"
+                                id="username"
                                 value={username}
                                 onChange={onChangeUsername}
                                 validations={[required]}
@@ -97,7 +96,7 @@ export const Login = () => {
                             <Input
                                 type="password"
                                 className="form-control"
-                                name="password"
+                                id="password"
                                 value={password}
                                 onChange={onChangePassword}
                                 validations={[required]}

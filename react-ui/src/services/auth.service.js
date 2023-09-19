@@ -40,7 +40,7 @@ const login = (username, password) => {
         if (response.data.username) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
-        return response.data;
+        return response.data; // TODO: Add catch
     });
 };
 

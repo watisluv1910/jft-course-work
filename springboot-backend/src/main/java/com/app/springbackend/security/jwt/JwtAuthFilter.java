@@ -54,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             final String token = jwtUtils.getTokenFromCookies(request);
 
-            if (token != null
+            if ((token != null && !token.equals(""))
                     && jwtUtils.isTokenValid(token)
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
 

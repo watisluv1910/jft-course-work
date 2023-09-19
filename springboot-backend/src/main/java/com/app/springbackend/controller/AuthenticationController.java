@@ -68,7 +68,8 @@ public class AuthenticationController {
      * @return {@link org.springframework.http.ResponseEntity} containing details of the authentication result including JWT tokens.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -97,6 +98,7 @@ public class AuthenticationController {
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
+
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(principle.toString(), "anonymousUser")) {

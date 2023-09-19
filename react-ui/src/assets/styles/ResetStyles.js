@@ -142,6 +142,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1.5rem; 
     font-weight: bold; 
     padding-bottom: 7px;
+    margin: 0 16px;
   }
   
   .navbar-nav {

@@ -9,9 +9,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  Default configuration class for Spring Security.
@@ -35,22 +38,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**", "/api/test/**") // TODO: Rework white endpoints
-                .permitAll()
-                .requestMatchers("/api/user/**")
-                .authenticated()
-                .anyRequest()
-                .permitAll()
-                .and()
+                .cors(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable) // TODO: Remove at production stage
+                .exceptionHandling(
+                        (exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
+                )
+                .sessionManagement(
+                        (sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests((authorizeHttpRequest) ->
+                        authorizeHttpRequest
+                                .requestMatchers("/api/profile/**", "/api/test/**").authenticated()
+                                .anyRequest().permitAll()
+                ) // TODO: Rework white endpoints
+//                .formLogin((formLogin) ->
+//                        formLogin
+//                                .usernameParameter("username")
+//                                .passwordParameter("password")
+//                                .loginPage("/api/auth/login")
+//                                .failureUrl("/api/auth/login?failed")
+//                                .loginProcessingUrl("/api/auth/login/process")
+//                ) // TODO: Check if it is actually necessary to be used
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
