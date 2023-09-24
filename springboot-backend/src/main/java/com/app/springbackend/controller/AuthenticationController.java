@@ -130,7 +130,7 @@ public class AuthenticationController {
     ) {
         String refreshToken = request.getRefreshToken();
 
-        if (refreshToken != null && refreshToken.length() > 0) {
+        if (refreshToken != null && !refreshToken.isEmpty()) {
             return tokenRefreshService
                     .findByToken(refreshToken)
                     .map(tokenRefreshService::verifyRefreshTokenExpiration)
