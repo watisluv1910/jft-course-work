@@ -12,7 +12,7 @@ FROM amazoncorretto:20-alpine-jdk
 
 RUN apk update && apk add bash dos2unix
 
-COPY wait-for-it.sh /wait-for-it.sh
+COPY ../../server_side_dev/pract_spring/wait-for-it.sh /wait-for-it.sh
 
 RUN \
     dos2unix /wait-for-it.sh &&  \

@@ -144,8 +144,12 @@ public class AuthenticationController {
                                     .build()
                             )
                     )
-                    .orElseThrow(() -> new TokenRefreshException(refreshToken,
-                            "Refresh token is not in database"));
+                    .orElseThrow(
+                            () -> new TokenRefreshException(
+                                refreshToken,
+                                "Refresh token is not in database"
+                            )
+                    );
         }
 
         return ResponseEntity
