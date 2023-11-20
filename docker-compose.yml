@@ -34,6 +34,10 @@ services:
     environment:
       FRONTEND_SERVER: app-client
       DB_SERVER: app-db
+      DB_DEFAULT_PORT: $DB_DEFAULT_PORT
+      DB_SCHEMA: $DB_SCHEMA
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
     networks:
       - backend
       - frontend
@@ -44,6 +48,8 @@ services:
     build:
       context: mysql-database
       dockerfile: Dockerfile
+      args:
+        - MYSQL_DATABASE=$DB_SCHEMA
     expose:
       - '${DB_DEFAULT_PORT:?error}'
     restart: no
@@ -58,7 +64,9 @@ services:
       MYSQL_DATABASE: $DB_SCHEMA
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
-      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_ONETIME_PASSWORD: true
+      MYSQL_INITDB_SKIP_TZINFO: true
     networks:
       - backend
 

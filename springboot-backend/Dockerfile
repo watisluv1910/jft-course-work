@@ -1,4 +1,4 @@
-FROM maven:3-amazoncorretto-21-alpine as build
+FROM maven:3-amazoncorretto-21 as build
 
 WORKDIR /app-server
 
@@ -12,7 +12,7 @@ FROM amazoncorretto:21-alpine-jdk
 
 RUN apk update && apk add bash dos2unix
 
-COPY ../../server_side_dev/pract_spring/wait-for-it.sh /wait-for-it.sh
+COPY wait-for-it.sh /wait-for-it.sh
 
 RUN \
     dos2unix /wait-for-it.sh &&  \

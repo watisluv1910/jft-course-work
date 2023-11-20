@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 app.use(
     '/api',
     createProxyMiddleware({
-        target: `http://${process.env.SPRING_SERVER}:8080`,
+        target: `http://${process.env.BACKEND_SERVER}:8080`,
         changeOrigin: true,
     }),
 );
@@ -35,5 +35,5 @@ app.get('*',
             path.resolve(__dirname, 'client', 'build', '../public/index.html'),
         ),
     );
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server initialized on: http://${process.env.REACT_SERVER}:${port} // ${new Date()}`));
+const port = process.env.FRONTEND_LOCAL_PORT || 3000;
+app.listen(port, () => console.log(`Server initialized on: http://${process.env.FRONTEND_SERVER}:${port} // ${new Date()}`));

@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns(
                         "http://%s:3000".formatted(frontendServer),
-                        "http://%s:3001".formatted(frontendServer)
+                        "http://localhost:3001"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .maxAge(1800)
