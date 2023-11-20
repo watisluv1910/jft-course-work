@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.app</groupId>
     <artifactId>front-end</artifactId>
-    <name>Factory Production Front-end</name>
+    <name>Factory production front-end</name>
     <version>0.0.1-SNAPSHOT</version>
     <build>
         <plugins>
@@ -66,7 +66,7 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.13.3</version>
+                <version>1.14.2</version>
                 <executions>
                     <execution>
                         <id>install node and npm</id>

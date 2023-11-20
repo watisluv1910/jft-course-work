@@ -1,5 +1,6 @@
 package com.app.springbackend.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${klv.app.frontend-server}")
+    private String frontendServer;
+
     /**
      * Adds CORS mappings for the entire application, allows all headers and credentials.
      * The maximum age for pre-flight requests - 1800 seconds.
@@ -22,8 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns(
-                        "http://localhost:3000",
-                        "http://localhost:3001"
+                        "http://%s:3000".formatted(frontendServer),
+                        "http://%s:3001".formatted(frontendServer)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .maxAge(1800)

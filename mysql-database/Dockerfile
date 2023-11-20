@@ -2,6 +2,6 @@ FROM mysql:latest
 
 RUN chown -R mysql:root /var/lib/mysql/
 
-ADD create_jft_database.sql /etc/mysql/create_jft_database.sql
+ADD schema.sql /etc/mysql/schema.sql
 
-RUN cp /etc/mysql/create_jft_database.sql /docker-entrypoint-initdb.d
+RUN cp /etc/mysql/schema.sql /docker-entrypoint-initdb.d

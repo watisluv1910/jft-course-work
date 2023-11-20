@@ -1,4 +1,4 @@
-FROM maven:3.9.4-amazoncorretto-20-debian as build
+FROM maven:3-amazoncorretto-21-alpine as build
 
 WORKDIR /app-server
 
@@ -8,7 +8,7 @@ COPY src src
 
 RUN mvn clean package
 
-FROM amazoncorretto:20-alpine-jdk
+FROM amazoncorretto:21-alpine-jdk
 
 RUN apk update && apk add bash dos2unix
 
@@ -20,4 +20,4 @@ RUN \
 
 COPY --from=build /app-server/target/*.jar app.jar
 
-CMD ["/bin/sh", "-c", "/wait-for-it.sh app-db:${DB_DEFAULT_PORT} -s -- java -jar app.jar"]
+CMD ["/bin/sh", "-c", "/wait-for-it.sh ${DB_SERVER}:${DB_DEFAULT_PORT} -s -- java -jar app.jar"]
