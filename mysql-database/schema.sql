@@ -1,8 +1,7 @@
-CREATE DATABASE  IF NOT EXISTS `jft_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `jft_database`;
+CREATE DATABASE IF NOT EXISTS `${DB_SCHEMA}` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `${DB_SCHEMA}`;
+
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
---
--- Database: jft_database
 -- ------------------------------------------------------
 -- Server version	8.0.32
 
@@ -52,15 +51,6 @@ CREATE TABLE `sn_user` (
   KEY `sn_user_username_user_email_index` (`username`,`user_email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sn_user`
---
-
-LOCK TABLES `sn_user` WRITE;
-/*!40000 ALTER TABLE `sn_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sn_user` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sn_user_bookmark`

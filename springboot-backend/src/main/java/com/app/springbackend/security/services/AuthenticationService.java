@@ -44,7 +44,7 @@ public class AuthenticationService {
         Set<String> stringRoles = request.getRole();
         Set<UserRole> roles = new HashSet<>();
 
-        if (stringRoles.size() == 0) {
+        if (stringRoles.isEmpty()) {
             UserRole roleUser = userRoleRepository.findByRoleName(EUserRole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role was not found"));
             roles.add(roleUser);

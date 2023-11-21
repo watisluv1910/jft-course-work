@@ -4,8 +4,7 @@
 # The Sun Reader Project
 
 "The Sun Reader" project is a full-stack web application developed for study purposes.
-It serves as a news aggregator with an additional bookmarking functionality
-to provide users with a seamless news browsing experience.
+It serves as a news aggregator with an additional bookmarking functionality.
 
 ## Features
 
@@ -36,9 +35,6 @@ To quickstart the **"The Sun Reader"** project, follow these steps:
 5. Access the application in your browser at http://localhost:3001.
 
 ## Local Development
-
-We would love for you to contribute to Angular and help make it even better than it is today! 
-As a contributor, here are the guidelines we would like you to follow:
 
 - [Getting Started](#getting-started)
 - [Coding Rules](#coding-rules)

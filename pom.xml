@@ -33,49 +33,46 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <executable>./init-db${script.extension}</executable>
+                </configuration>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
-                        <id>auto-clean</id>
+                        <id>init-database</id>
                         <phase>initialize</phase>
                         <goals>
-                            <goal>clean</goal>
+                            <goal>exec</goal>
                         </goals>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <fileset>
-                                    <directory>${basedir}/springboot-backend/target/classes/static</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                            <outputDirectory>${basedir}/springboot-backend/target/classes/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/react-ui/build</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>Windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.bat</script.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.sh</script.extension>
+            </properties>
+        </profile>
+    </profiles>
 </project>

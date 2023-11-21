@@ -1,7 +1,23 @@
 version: '3.9'
 
-
 services:
+
+  # App frontend service
+  app-client:
+    container_name: app-client
+    build:
+      context: react-ui
+      dockerfile: Dockerfile
+    ports:
+      - '${FRONTEND_LOCAL_PORT:?error}:${FRONTEND_DOCKER_PORT:?error}'
+    restart: no
+    depends_on:
+      - app-server
+    environment:
+      FRONTEND_SERVER: app-client
+      BACKEND_SERVER: app-server
+    networks:
+      - frontend
 
   # App backend service
   app-server:
@@ -10,37 +26,20 @@ services:
       context: springboot-backend
       dockerfile: Dockerfile
     ports:
-      - '${SPRING_LOCAL_PORT:?error}:${SPRING_DOCKER_PORT:?error}'
+      - '${BACKEND_DEFAULT_PORT:?error}'
     restart: no
     depends_on:
       app-db:
         condition: service_healthy
     environment:
-      DB_SCHEMA: $DB_SCHEMA
+      FRONTEND_SERVER: app-client
       DB_SERVER: app-db
-      DB_DEFAULT_PORT: $DB_DOCKER_PORT
-      DB_LOCAL_USER: $DB_DOCKER_USER
-      DB_LOCAL_PASSWORD: $DB_DOCKER_PASSWORD
+      DB_DEFAULT_PORT: $DB_DEFAULT_PORT
+      DB_SCHEMA: $DB_SCHEMA
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
     networks:
       - backend
-      - frontend
-
-  # App frontend service
-  app-client:
-    container_name: app-client
-    hostname: sun.klv.com # TODO: Change before deployment
-    build:
-      context: react-ui
-      dockerfile: Dockerfile
-    ports:
-      - '${REACT_LOCAL_PORT:?error}:${REACT_DOCKER_PORT:?error}'
-    restart: no
-    depends_on:
-      - app-server
-    environment:
-      REACT_SERVER: app-client
-      SPRING_SERVER: app-server
-    networks:
       - frontend
 
   # Database service (Mysql)
@@ -49,8 +48,10 @@ services:
     build:
       context: mysql-database
       dockerfile: Dockerfile
-    ports:
-      - '${DB_LOCAL_PORT:?error}:${DB_DOCKER_PORT:?error}'
+      args:
+        - MYSQL_DATABASE=$DB_SCHEMA
+    expose:
+      - '${DB_DEFAULT_PORT:?error}'
     restart: no
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-u", "root", "-proot" ]
@@ -61,9 +62,11 @@ services:
       - db-data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: $DB_SCHEMA
-      MYSQL_USER: $DB_DOCKER_USER
-      MYSQL_PASSWORD: $DB_DOCKER_PASSWORD
-      MYSQL_ROOT_PASSWORD: $DB_DOCKER_ROOT_PASSWORD
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_ONETIME_PASSWORD: true
+      MYSQL_INITDB_SKIP_TZINFO: true
     networks:
       - backend
 
@@ -74,4 +77,6 @@ volumes:
 
 networks:
   backend:
+    driver: bridge
   frontend:
+    driver: bridge
