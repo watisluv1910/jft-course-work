@@ -29,10 +29,15 @@ It serves as a news aggregator with an additional bookmarking functionality.
 To quickstart the **"The Sun Reader"** project, follow these steps:
 
 1. Clone the repository to your local machine.
-2. Make sure you have [Docker](https://www.docker.com/) installed.
-3. Update the environment variables in the `.env.example` file with your desired configuration by copying it into `.env` file from **the same** directory.
-4. Build and run the Docker containers using the `docker-compose up` command in the [root directory](.).
-5. Access the application in your browser at http://localhost:3001.
+
+   ```shell
+   git clone https://github.com/watisluv1910/mirea_5s_server-side-development_course-work.git
+   cd jft-course-work
+   ```
+   
+2. Make sure you have [Docker](https://www.docker.com/) installed and enabled.
+3. Build and run the Docker containers using the `docker-compose up` command in project's [root directory](.).
+4. Access the application in your browser at http://localhost:3000.
 
 ## Local Development
 
@@ -46,29 +51,54 @@ To quickstart the **"The Sun Reader"** project, follow these steps:
 To start the project locally:
 
 1. Clone the repository to your local machine.
-2. Update the environment variables in the `.env.example` file with your desired configuration by copying it into `.env` file from **the same** directory.
-3. Install the tools listed below if you **don't already have them**:
-   - [Node JS](https://nodejs.org/en/download) > v18.0.2.
-   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v19.0.1.
-   - [MySQL Server](https://dev.mysql.com/downloads/mysql/) > v8.0.31.
-4. **Check** MySQL server is running and use [MySQL Command Line Client](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 
-or [MySQL Workbench](https://www.mysql.com/products/workbench/) to execute database 
-initial script from [/mysql-database](./mysql-database) directory.
-5. Execute **the main class** of a Spring Boot Server application through your IDE
-or open a terminal in a root directory and run the following commands (insert the [current project version](#the-sun-reader-project)):
-   
-   ```shell
-   mvn clean package
-   java -jar springboot-backend/target/spring-backend-<version>-SNAPSHOT.jar fully.qualified.package.Application 
-   ```
-   
-6. Go to [/react-ui](./react-ui) directory and execute the following code:
 
    ```shell
+   git clone https://github.com/watisluv1910/mirea_5s_server-side-development_course-work.git
+   cd jft-course-work
+   ```
+   
+2. Update the environment variables in the `.env.example` file with your desired configuration by copying it into `.env` file from **the same** directory.
+   
+   ```shell
+   cp .env.example .env
+   ```
+   
+3. Modify _MYSQL_USER_ and _MYSQL_PASSWORD_ to match your [MySQL Server](https://dev.mysql.com/downloads/mysql/) credentials.
+
+   ```shell
+   nano .env
+   ```
+   
+4. Install the tools listed below if you **don't already have them**:
+   - [Node JS](https://nodejs.org/en/download) > v18.0.2.
+   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v21.0.1.
+   - [MySQL Server](https://dev.mysql.com/downloads/mysql/) > v8.2.0.
+
+5. Check [MySQL Server](https://dev.mysql.com/downloads/mysql/) is running at _MYSQL_TCP_PORT_. 
+Change _MYSQL_TCP_PORT_ environmental variable if needed.
+
+6. Run the following command from project's [root directory](.):
+
+   ```shell
+   ./mvnw clean package
+   ```
+   
+7. Run backend server by executing the following commands from project's [root directory](.):
+   
+   ```shell
+   cd springboot-backend
+   java -jar /target/back-end-1.0.0.jar
+   ```
+
+8. Run frontend server by executing the following commands from project's [root directory](.):
+
+   ```shell
+   cd react-ui
    npm run start
    ```
    
-7. Access the application in your browser at http://localhost:3000.
+9. Access the application in your browser at http://localhost:3000 
+(or another port if you changed _FRONTEND_DEFAULT_PORT_ environment variable).
 
 ### Coding Rules
 
@@ -76,7 +106,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 - All features or bug fixes must be tested by one or more specs (unit-tests).
 - All public API methods must be documented with [Doc comments](https://www.jetbrains.com/help/webstorm/creating-jsdoc-comments.html).
-- We follow [Google's JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), but wrap all code at 100 characters.
+- We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) and [Commitlint](https://commitlint.js.org/#/) configs.
 
 ### Commit Message Guidelines
 

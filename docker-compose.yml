@@ -1,18 +1,21 @@
 version: '3.9'
 
+x-defaults: &defaults
+  env_file: ${ENV_FILE:-.env.example}
+
 services:
 
   # App frontend service
   app-client:
-    container_name: app-client
     build:
       context: react-ui
       dockerfile: Dockerfile
     ports:
-      - '${FRONTEND_LOCAL_PORT:?error}:${FRONTEND_DOCKER_PORT:?error}'
+      - "${FRONTEND_DEFAULT_PORT:-3000}:${FRONTEND_DEFAULT_PORT:-3000}"
     restart: no
     depends_on:
       - app-server
+    <<: *defaults
     environment:
       FRONTEND_SERVER: app-client
       BACKEND_SERVER: app-server
@@ -21,37 +24,32 @@ services:
 
   # App backend service
   app-server:
-    container_name: app-server
     build:
       context: springboot-backend
       dockerfile: Dockerfile
     ports:
-      - '${BACKEND_DEFAULT_PORT:?error}'
+      - "${BACKEND_DEFAULT_PORT:-8080}"
     restart: no
     depends_on:
       app-db:
         condition: service_healthy
+    <<: *defaults
     environment:
       FRONTEND_SERVER: app-client
       DB_SERVER: app-db
-      DB_DEFAULT_PORT: $DB_DEFAULT_PORT
-      DB_SCHEMA: $DB_SCHEMA
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
     networks:
       - backend
       - frontend
 
   # Database service (Mysql)
   app-db:
-    container_name: app-db
     build:
       context: mysql-database
       dockerfile: Dockerfile
       args:
-        - MYSQL_DATABASE=$DB_SCHEMA
+        DB_SCHEMA: ${MYSQL_DATABASE:-jft_database}
     expose:
-      - '${DB_DEFAULT_PORT:?error}'
+      - "${DB_DEFAULT_PORT:-3306}"
     restart: no
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-u", "root", "-proot" ]
@@ -60,10 +58,8 @@ services:
       retries: 5
     volumes:
       - db-data:/var/lib/mysql
+    <<: *defaults
     environment:
-      MYSQL_DATABASE: $DB_SCHEMA
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
       MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_ONETIME_PASSWORD: true
       MYSQL_INITDB_SKIP_TZINFO: true

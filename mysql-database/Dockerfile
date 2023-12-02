@@ -1,17 +1,15 @@
 FROM alpine AS build
 
-ARG MYSQL_DATABASE=jft_database
-
-WORKDIR /tmp
+ARG DB_SCHEMA=jft_database
 
 COPY schema.sql .
 
 RUN apk update && apk add bash
 
-RUN sed "s/\${DB_SCHEMA}/$MYSQL_DATABASE/g" schema.sql > /tmp/schema_modified.sql
+RUN sed "s/\${DB_SCHEMA}/$DB_SCHEMA/g" schema.sql > schema_modified.sql
 
 FROM mysql:latest
 
 RUN chown -R mysql:root /var/lib/mysql/
 
-COPY --from=build /tmp/schema_modified.sql /docker-entrypoint-initdb.d/schema.sql
+COPY --from=build schema_modified.sql /docker-entrypoint-initdb.d/schema.sql
