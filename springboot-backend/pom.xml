@@ -12,7 +12,7 @@
     <artifactId>back-end</artifactId>
     <name>Factory production back-end</name>
     <description>springboot-backend</description>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <properties>
         <java.version>21</java.version>
