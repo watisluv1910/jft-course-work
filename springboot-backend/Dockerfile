@@ -20,4 +20,4 @@ RUN \
 
 COPY --from=build /app-server/target/*.jar app.jar
 
-CMD ["/bin/sh", "-c", "/wait-for-it.sh ${DB_SERVER}:${DB_DEFAULT_PORT} -s -- java -jar app.jar"]
+CMD ["/bin/sh", "-c", "/wait-for-it.sh ${DB_SERVER}:${MYSQL_TCP_PORT} -s -- java -jar app.jar"]
