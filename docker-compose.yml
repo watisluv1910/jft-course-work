@@ -49,7 +49,7 @@ services:
       context: mysql-database
       dockerfile: Dockerfile
       args:
-        - MYSQL_DATABASE=$DB_SCHEMA
+        DB_SCHEMA: ${MYSQL_DATABASE:-jft_database}
     expose:
       - '${DB_DEFAULT_PORT:?error}'
     restart: no

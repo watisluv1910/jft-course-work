@@ -10,9 +10,9 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     database: mysql
   datasource:
-    url: jdbc:mysql://${DB_SERVER:localhost}:${DB_DEFAULT_PORT}/${DB_SCHEMA}?allowPublicKeyRetrieval=true
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_SERVER:localhost}:${MYSQL_TCP_PORT}/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 60000
