@@ -1,5 +1,8 @@
 version: '3.9'
 
+x-defaults: &defaults
+  env_file: ${ENV_FILE:-.env.example}
+
 services:
 
   # App frontend service
@@ -12,6 +15,7 @@ services:
     restart: no
     depends_on:
       - app-server
+    <<: *defaults
     environment:
       FRONTEND_SERVER: app-client
       BACKEND_SERVER: app-server
@@ -29,13 +33,10 @@ services:
     depends_on:
       app-db:
         condition: service_healthy
+    <<: *defaults
     environment:
       FRONTEND_SERVER: app-client
       DB_SERVER: app-db
-      DB_DEFAULT_PORT: $DB_DEFAULT_PORT
-      DB_SCHEMA: $DB_SCHEMA
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
     networks:
       - backend
       - frontend
@@ -57,10 +58,8 @@ services:
       retries: 5
     volumes:
       - db-data:/var/lib/mysql
+    <<: *defaults
     environment:
-      MYSQL_DATABASE: $DB_SCHEMA
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
       MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_ONETIME_PASSWORD: true
       MYSQL_INITDB_SKIP_TZINFO: true
