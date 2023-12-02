@@ -4,7 +4,6 @@ services:
 
   # App frontend service
   app-client:
-    container_name: app-client
     build:
       context: react-ui
       dockerfile: Dockerfile
@@ -21,7 +20,6 @@ services:
 
   # App backend service
   app-server:
-    container_name: app-server
     build:
       context: springboot-backend
       dockerfile: Dockerfile
@@ -44,7 +42,6 @@ services:
 
   # Database service (Mysql)
   app-db:
-    container_name: app-db
     build:
       context: mysql-database
       dockerfile: Dockerfile
