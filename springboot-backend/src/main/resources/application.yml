@@ -24,7 +24,7 @@ server:
 
 klv:
   app:
-    frontend-server: ${FRONTEND_SERVER:localhost}
+    frontend-port: ${FRONTEND_DEFAULT_PORT:3000}
     jwt-cookie-name: tsr-jwt-cookie
     jwt-refresh-cookie-name: tsr-jwt-refresh-cookie
     sign-key: 423F4528482B4D6251655468576D5A7134743677397A24432646294A404E6352

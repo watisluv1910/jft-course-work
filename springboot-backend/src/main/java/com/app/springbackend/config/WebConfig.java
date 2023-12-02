@@ -13,8 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${klv.app.frontend-server}")
-    private String frontendServer;
+    @Value("${klv.app.frontend-port}")
+    private String frontendPort;
 
     /**
      * Adds CORS mappings for the entire application, allows all headers and credentials.
@@ -26,8 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns(
-                        "http://%s:3000".formatted(frontendServer),
-                        "http://localhost:3001"
+                        "http://localhost:%s".formatted(frontendPort)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .maxAge(1800)
