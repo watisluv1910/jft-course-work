@@ -28,7 +28,7 @@ services:
       context: springboot-backend
       dockerfile: Dockerfile
     ports:
-      - '${BACKEND_DEFAULT_PORT:?error}'
+      - "${BACKEND_DEFAULT_PORT:-8080}"
     restart: no
     depends_on:
       app-db:
@@ -49,7 +49,7 @@ services:
       args:
         DB_SCHEMA: ${MYSQL_DATABASE:-jft_database}
     expose:
-      - '${DB_DEFAULT_PORT:?error}'
+      - "${DB_DEFAULT_PORT:-3306}"
     restart: no
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-u", "root", "-proot" ]
