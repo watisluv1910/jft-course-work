@@ -15,7 +15,6 @@ import {BoardAdmin} from './components/BoardAdmin';
 import {BookmarkService} from './services/bookmark.service';
 import {BookmarksContext} from './contexts/useBookmarksContext';
 import sunIcon from './assets/icons/sun_favicon_round.png';
-// import AuthVerify from './common/AuthVerify';
 
 export const App = () => {
     const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -158,8 +157,6 @@ export const App = () => {
                                    element={<BoardAdmin />} />
                         </Routes>
                     </div>
-
-                    {/* <AuthVerify logOut={logout}/> */}
                 </div>
             </BookmarksContext.Provider>
         </>
