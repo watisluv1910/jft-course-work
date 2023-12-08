@@ -103,6 +103,10 @@ export const App = () => {
                             <div className="navbar-nav ml-auto">
                                 <li className="nav-item">
                                     <Link to={'/profile'}
+                                          state={{
+                                              username: currentUser.username,
+                                              userEmail: currentUser.userEmail,
+                                          }}
                                           className="nav-link">
                                         {currentUser.username}
                                     </Link>
