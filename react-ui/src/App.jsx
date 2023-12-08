@@ -35,17 +35,20 @@ export const App = () => {
                 .then((data) => setBookmarks(data));
         }
 
-        eventBus.on('logout', () => {
-            logout();
-        });
+        const handleLogoutEvent = () => {
+            handleLogout();
+        };
+
+        eventBus.on('logout', handleLogoutEvent);
 
         return () => {
-            eventBus.remove('logout');
+            eventBus.remove('logout', handleLogoutEvent);
         };
     }, []);
 
-    const logout = () => {
+    const handleLogout = () => {
         AuthService.logout().then((res) => console.log(res.message));
+
         setShowModeratorBoard(false);
         setShowAdminBoard(false);
         setCurrentUser(undefined);
@@ -108,7 +111,7 @@ export const App = () => {
                                     <a
                                         href="/"
                                         className="nav-link"
-                                        onClick={logout}
+                                        onClick={handleLogout}
                                     >
                                         Sign-out
                                     </a>
