@@ -19,7 +19,7 @@ It serves as a news aggregator with an additional bookmarking functionality.
 ## Technologies Stack
 
 - **Front-end:** NodeJS, ReactJS, HTML5, CSS3  
-- **Back-end:** Spring Boot (Java)  
+- **Back-end:** Spring Boot (Kotlin), Mockk, JUnit5, Dokka
 - **Database:** MySQL  
 - **Docker:** Containerization and deployment  
 - **HTTP Client:** Axios  
