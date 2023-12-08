@@ -72,7 +72,7 @@ To start the project locally:
    
 4. Install the tools listed below if you **don't already have them**:
    - [Node JS](https://nodejs.org/en/download) > v18.0.2.
-   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v21.0.1.
+   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v17.0.9.
    - [MySQL Server](https://dev.mysql.com/downloads/mysql/) > v8.2.0.
 
 5. Check [MySQL Server](https://dev.mysql.com/downloads/mysql/) is running at _MYSQL_TCP_PORT_. 
