@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from '../config/api';
 
 const addBookmark = async (story) => {
     const articleUrl = story.url;
