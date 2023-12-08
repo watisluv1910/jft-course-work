@@ -7,7 +7,7 @@ import {
     validateEmail,
     validatePassword,
     validateUsername,
-} from '../utils/validate';
+} from '../utils/validation';
 import {required} from '../utils/required';
 
 /**
