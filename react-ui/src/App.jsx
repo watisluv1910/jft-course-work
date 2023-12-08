@@ -71,20 +71,20 @@ export const App = () => {
                             The Sun News Stories
                         </Link>
                         <div className="navbar-nav mr-auto">
-                            {showModeratorBoard && (
-                                <li className="nav-item">
-                                    <Link to={'/test/moderator'}
-                                          className="nav-link">
-                                        Moderator Board
-                                    </Link>
-                                </li>
-                            )}
-
                             {showAdminBoard && (
                                 <li className="nav-item">
                                     <Link to={'/test/admin'}
                                           className="nav-link">
                                         Admin Board
+                                    </Link>
+                                </li>
+                            )}
+
+                            {showModeratorBoard && (
+                                <li className="nav-item">
+                                    <Link to={'/test/moderator'}
+                                          className="nav-link">
+                                        Moderator Board
                                     </Link>
                                 </li>
                             )}
