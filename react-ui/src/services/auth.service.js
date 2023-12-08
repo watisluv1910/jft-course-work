@@ -43,8 +43,14 @@ const login = (username, password) => {
                 JSON.stringify(response.data.user),
             );
         }
-        return response.data; // TODO: Add catch
-    });
+        if (response.data.tokenExpiration) {
+            localStorage.setItem(
+                'token_expiration',
+                JSON.stringify(response.data.tokenExpiration),
+            );
+        }
+        return response.data;
+    }).catch((e) => console.error(e.message));
 };
 
 /**
@@ -56,9 +62,28 @@ const login = (username, password) => {
  * with the server's response data.
  */
 const logout = () => {
-    localStorage.removeItem('user');
-    return axios.post(authUrl + 'logout')
-        .then((response) => response.data);
+    localStorage.clear();
+    return api.post(authUrl + 'logout')
+        .then((response) => response.data)
+        .catch((e) => console.error(e.message));
+};
+
+const refreshAccessToken = () => {
+    return api.post(authUrl + 'refresh-token')
+        .then((res) => {
+            const expiration = getTokenExpiration();
+            if (expiration) {
+                expiration['accessTokenExpiresAt'] =
+                    res.data.accessTokenExpiresAt;
+
+                localStorage.setItem(
+                    'token_expiration',
+                    JSON.stringify(expiration),
+                );
+            }
+            console.log(res.data.message.content);
+        })
+        .catch((err) => console.error('Error refreshing access token', err));
 };
 
 /**
@@ -70,9 +95,14 @@ const logout = () => {
  */
 const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));
 
+const getTokenExpiration = () =>
+    JSON.parse(localStorage.getItem('token_expiration'));
+
 export const AuthService = {
     register,
     login,
     logout,
+    refreshAccessToken,
     getCurrentUser,
+    getTokenExpiration,
 };
