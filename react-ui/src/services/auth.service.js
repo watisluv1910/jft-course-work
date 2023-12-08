@@ -1,7 +1,6 @@
-import axios from 'axios';
-import {BASE_API_URL} from '../data/constants';
+import api from '../config/api';
 
-const authUrl = `${BASE_API_URL}/auth/`;
+const authUrl = `/auth/`;
 
 /**
  * Registers a new user by sending a POST request to the authentication API.
@@ -14,12 +13,12 @@ const authUrl = `${BASE_API_URL}/auth/`;
  * that returns the server's response.
  */
 const register = (username, userEmail, password) => {
-    return axios.post(authUrl + 'register', {
+    return api.post(authUrl + 'register', {
         username,
         userEmail,
         password,
-        role: ['USER'],
-    });
+        roles: ['ROLE_USER', 'ROLE_MODERATOR'],
+    }).catch((e) => console.error(e.message));
 };
 
 /**
@@ -33,15 +32,25 @@ const register = (username, userEmail, password) => {
  * with the authenticated user's data.
  */
 const login = (username, password) => {
-    return axios.post(authUrl + 'login', {
+    console.log('Login here');
+    return api.post(authUrl + 'login', {
         username,
         password,
     }).then((response) => {
-        if (response.data.username) {
-            localStorage.setItem('user', JSON.stringify(response.data));
+        if (response.data.user) {
+            localStorage.setItem(
+                'user',
+                JSON.stringify(response.data.user),
+            );
         }
-        return response.data; // TODO: Add catch
-    });
+        if (response.data.tokenExpiration) {
+            localStorage.setItem(
+                'token_expiration',
+                JSON.stringify(response.data.tokenExpiration),
+            );
+        }
+        return response.data;
+    }).catch((e) => console.error(e.message));
 };
 
 /**
@@ -53,9 +62,28 @@ const login = (username, password) => {
  * with the server's response data.
  */
 const logout = () => {
-    localStorage.removeItem('user');
-    return axios.post(authUrl + 'logout')
-        .then((response) => response.data);
+    localStorage.clear();
+    return api.post(authUrl + 'logout')
+        .then((response) => response.data)
+        .catch((e) => console.error(e.message));
+};
+
+const refreshAccessToken = () => {
+    return api.post(authUrl + 'refresh-token')
+        .then((res) => {
+            const expiration = getTokenExpiration();
+            if (expiration) {
+                expiration['accessTokenExpiresAt'] =
+                    res.data.accessTokenExpiresAt;
+
+                localStorage.setItem(
+                    'token_expiration',
+                    JSON.stringify(expiration),
+                );
+            }
+            console.log(res.data.message.content);
+        })
+        .catch((err) => console.error('Error refreshing access token', err));
 };
 
 /**
@@ -67,9 +95,14 @@ const logout = () => {
  */
 const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));
 
+const getTokenExpiration = () =>
+    JSON.parse(localStorage.getItem('token_expiration'));
+
 export const AuthService = {
     register,
     login,
     logout,
+    refreshAccessToken,
     getCurrentUser,
+    getTokenExpiration,
 };

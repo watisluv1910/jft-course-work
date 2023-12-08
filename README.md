@@ -1,5 +1,6 @@
 ![Project version](https://img.shields.io/badge/Project_version-1.0.0-gree)
 ![Contributors](https://img.shields.io/badge/Contributors-1-blue)
+[![Static Badge](https://img.shields.io/badge/Documentation-5A2FF2)](backend/target/documentation/dokka/index.html)
 
 # The Sun Reader Project
 
@@ -18,7 +19,7 @@ It serves as a news aggregator with an additional bookmarking functionality.
 ## Technologies Stack
 
 - **Front-end:** NodeJS, ReactJS, HTML5, CSS3  
-- **Back-end:** Spring Boot (Java)  
+- **Back-end:** Spring Boot (Kotlin), Mockk, JUnit5, Dokka
 - **Database:** MySQL  
 - **Docker:** Containerization and deployment  
 - **HTTP Client:** Axios  
@@ -71,7 +72,7 @@ To start the project locally:
    
 4. Install the tools listed below if you **don't already have them**:
    - [Node JS](https://nodejs.org/en/download) > v18.0.2.
-   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v21.0.1.
+   - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) > v17.0.9.
    - [MySQL Server](https://dev.mysql.com/downloads/mysql/) > v8.2.0.
 
 5. Check [MySQL Server](https://dev.mysql.com/downloads/mysql/) is running at _MYSQL_TCP_PORT_. 
@@ -87,7 +88,7 @@ Change _MYSQL_TCP_PORT_ environmental variable if needed.
    
    ```shell
    cd springboot-backend
-   java -jar /target/back-end-1.0.0.jar
+   java -jar /target/backend-<version>.jar
    ```
 
 8. Run frontend server by executing the following commands from project's [root directory](.):

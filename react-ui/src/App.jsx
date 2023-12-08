@@ -15,7 +15,6 @@ import {BoardAdmin} from './components/BoardAdmin';
 import {BookmarkService} from './services/bookmark.service';
 import {BookmarksContext} from './contexts/useBookmarksContext';
 import sunIcon from './assets/icons/sun_favicon_round.png';
-// import AuthVerify from './common/AuthVerify';
 
 export const App = () => {
     const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -36,17 +35,20 @@ export const App = () => {
                 .then((data) => setBookmarks(data));
         }
 
-        eventBus.on('logout', () => {
-            logout();
-        });
+        const handleLogoutEvent = () => {
+            handleLogout();
+        };
+
+        eventBus.on('logout', handleLogoutEvent);
 
         return () => {
-            eventBus.remove('logout');
+            eventBus.remove('logout', handleLogoutEvent);
         };
     }, []);
 
-    const logout = () => {
+    const handleLogout = () => {
         AuthService.logout().then((res) => console.log(res.message));
+
         setShowModeratorBoard(false);
         setShowAdminBoard(false);
         setCurrentUser(undefined);
@@ -69,20 +71,20 @@ export const App = () => {
                             The Sun News Stories
                         </Link>
                         <div className="navbar-nav mr-auto">
-                            {showModeratorBoard && (
-                                <li className="nav-item">
-                                    <Link to={'/test/moderator'}
-                                          className="nav-link">
-                                        Moderator Board
-                                    </Link>
-                                </li>
-                            )}
-
                             {showAdminBoard && (
                                 <li className="nav-item">
                                     <Link to={'/test/admin'}
                                           className="nav-link">
                                         Admin Board
+                                    </Link>
+                                </li>
+                            )}
+
+                            {showModeratorBoard && (
+                                <li className="nav-item">
+                                    <Link to={'/test/moderator'}
+                                          className="nav-link">
+                                        Moderator Board
                                     </Link>
                                 </li>
                             )}
@@ -101,6 +103,10 @@ export const App = () => {
                             <div className="navbar-nav ml-auto">
                                 <li className="nav-item">
                                     <Link to={'/profile'}
+                                          state={{
+                                              username: currentUser.username,
+                                              userEmail: currentUser.userEmail,
+                                          }}
                                           className="nav-link">
                                         {currentUser.username}
                                     </Link>
@@ -109,7 +115,7 @@ export const App = () => {
                                     <a
                                         href="/"
                                         className="nav-link"
-                                        onClick={logout}
+                                        onClick={handleLogout}
                                     >
                                         Sign-out
                                     </a>
@@ -158,8 +164,6 @@ export const App = () => {
                                    element={<BoardAdmin />} />
                         </Routes>
                     </div>
-
-                    {/* <AuthVerify logOut={logout}/> */}
                 </div>
             </BookmarksContext.Provider>
         </>

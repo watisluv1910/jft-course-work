@@ -37,9 +37,9 @@ export const Bookmark = ({bookmark}) => {
                         color="#000"
                         className="story-meta-element"
                     >
-                        Added at:
-                    </StoryMetaElement>{' '}
-                    {bookmark.timestamp}
+                        Added at:{' '}
+                    </StoryMetaElement>
+                    {new Date(bookmark.timestamp).toLocaleString()}
                 </span>
             </StoryMeta>
         </StoryWrapper>

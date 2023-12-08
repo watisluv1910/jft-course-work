@@ -7,7 +7,7 @@ import {
     validateEmail,
     validatePassword,
     validateUsername,
-} from '../utils/validate';
+} from '../utils/validation';
 import {required} from '../utils/required';
 
 /**
@@ -22,7 +22,7 @@ import {required} from '../utils/required';
  * @example
  * <Register />
  */
-export const Register = (props) => {
+export const Register = () => {
     const form = useRef(null);
     const checkBtn = useRef(null);
 

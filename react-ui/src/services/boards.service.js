@@ -1,8 +1,4 @@
-import api from '../utils/api';
-
-const getPublicContent = () => {
-    return api.get('/test');
-};
+import api from '../config/api';
 
 const getUserBoard = () => {
     return api.get('/test/user');
@@ -17,7 +13,6 @@ const getAdminBoard = () => {
 };
 
 export const BoardsService = {
-    getPublicContent,
     getUserBoard,
     getModeratorBoard,
     getAdminBoard,
