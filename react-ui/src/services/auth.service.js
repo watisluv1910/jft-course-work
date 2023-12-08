@@ -1,7 +1,6 @@
-import axios from 'axios';
-import {BASE_API_URL} from '../data/constants';
+import api from '../config/api';
 
-const authUrl = `${BASE_API_URL}/auth/`;
+const authUrl = `/auth/`;
 
 /**
  * Registers a new user by sending a POST request to the authentication API.
@@ -14,12 +13,12 @@ const authUrl = `${BASE_API_URL}/auth/`;
  * that returns the server's response.
  */
 const register = (username, userEmail, password) => {
-    return axios.post(authUrl + 'register', {
+    return api.post(authUrl + 'register', {
         username,
         userEmail,
         password,
-        role: ['USER'],
-    });
+        roles: ['ROLE_USER', 'ROLE_MODERATOR'],
+    }).catch((e) => console.error(e.message));
 };
 
 /**
@@ -33,12 +32,16 @@ const register = (username, userEmail, password) => {
  * with the authenticated user's data.
  */
 const login = (username, password) => {
-    return axios.post(authUrl + 'login', {
+    console.log('Login here');
+    return api.post(authUrl + 'login', {
         username,
         password,
     }).then((response) => {
-        if (response.data.username) {
-            localStorage.setItem('user', JSON.stringify(response.data));
+        if (response.data.user) {
+            localStorage.setItem(
+                'user',
+                JSON.stringify(response.data.user),
+            );
         }
         return response.data; // TODO: Add catch
     });
