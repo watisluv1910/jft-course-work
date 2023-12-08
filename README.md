@@ -1,5 +1,6 @@
 ![Project version](https://img.shields.io/badge/Project_version-1.0.0-gree)
 ![Contributors](https://img.shields.io/badge/Contributors-1-blue)
+[![Static Badge](https://img.shields.io/badge/Documentation-5A2FF2)](backend/target/documentation/dokka/index.html)
 
 # The Sun Reader Project
 
@@ -87,7 +88,7 @@ Change _MYSQL_TCP_PORT_ environmental variable if needed.
    
    ```shell
    cd springboot-backend
-   java -jar /target/back-end-1.0.0.jar
+   java -jar /target/backend-<version>.jar
    ```
 
 8. Run frontend server by executing the following commands from project's [root directory](.):
