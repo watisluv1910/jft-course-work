@@ -1,0 +1,54 @@
+spring:
+  config:
+    import:
+      - optional:file:${user.dir}/../.env[.properties]
+      - optional:file:${user.dir}/.env[.properties]
+  devtools:
+    add-properties: false
+  jmx:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    database: mysql
+  datasource:
+    url: jdbc:mysql://${DB_SERVER:localhost}:${MYSQL_TCP_PORT}/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+      minimum-idle: 5
+
+server:
+  port: ${BACKEND_DEFAULT_PORT:8080}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          servlet:
+            handler:
+              org.springframework.web.servlet.handler.HandlerMappingIntrospector: ERROR
+
+tsr:
+  app:
+    frontend-port: ${FRONTEND_DEFAULT_PORT:3000}
+    jwt-cookie-name: tsr-jwt-cookie
+    jwt-refresh-cookie-name: tsr-jwt-refresh-cookie
+    sign-key: 423F4528482B4D6251655468576D5A7134743677397A24432646294A404E6352
+    token-expiration-ms: 3600000
+    refresh-token-expiration-ms: 86400000
