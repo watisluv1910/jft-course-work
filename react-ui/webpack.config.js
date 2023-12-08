@@ -116,8 +116,15 @@ module.exports = {
         }),
     ],
     devServer: {
-        port: 3001,
+        port: 3000,
         hot: true, // Helps to keep state in React and change only edited code
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8080',
+                secure: false,
+                withCredentials: true,
+            },
+        },
     },
     devtool: 'source-map',
     mode: production ? 'production' : 'development',
