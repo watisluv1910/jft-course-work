@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: "backend"
   config:
     import:
       - optional:file:${user.dir}/../.env[.properties]
@@ -44,9 +46,36 @@ logging:
             handler:
               org.springframework.web.servlet.handler.HandlerMappingIntrospector: ERROR
 
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - "health"
+          - "info"
+          - "env"
+          - "metrics"
+          - "mappings"
+        exclude: beans
+  endpoint:
+    env:
+      show-values: always # TODO: Change in production to when_authorized
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+    app:
+      name: ${spring.application.name}
+      links:
+        - github: "https://github.com/watisluv1910/mirea_5s_server-side-development_course-work.git"
+
 tsr:
   app:
     frontend-port: ${FRONTEND_DEFAULT_PORT:3000}
+    dashboard-port: ${DASHBOARD_DEFAULT_PORT:8000}
     jwt-cookie-name: tsr-jwt-cookie
     jwt-refresh-cookie-name: tsr-jwt-refresh-cookie
     sign-key: 423F4528482B4D6251655468576D5A7134743677397A24432646294A404E6352

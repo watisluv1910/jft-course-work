@@ -16,6 +16,9 @@ class WebConfig : WebMvcConfigurer {
     @Value("\${tsr.app.frontend-port}")
     private val frontendPort: String? = null
 
+    @Value("\${tsr.app.dashboard-port}")
+    private val dashboardPort: String? = null
+
     /**
      * Configures CORS mappings for the specified endpoints.
      *
@@ -29,6 +32,17 @@ class WebConfig : WebMvcConfigurer {
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .maxAge(1800)
+            .allowedHeaders("*")
+            .allowCredentials(true)
+
+        registry
+            .addMapping("/management/**")
+            .allowedOriginPatterns(
+                "http://localhost:$dashboardPort",
+                "http://dashboard:$dashboardPort"
+            )
+            .allowedMethods("GET")
+            .maxAge(300)
             .allowedHeaders("*")
             .allowCredentials(true)
     }

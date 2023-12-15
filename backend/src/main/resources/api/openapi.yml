@@ -1,0 +1,427 @@
+openapi: "3.0.3"
+servers:
+  - url: "http://localhost:4010"
+    description: "Default development server"
+  - url: "https://sun_reader"
+    description: "Default production server"
+info:
+  title: |
+    The Sun Reader API
+  description: |
+    ## Description
+      An API specification for \"The Sun Reader\" project's server.
+    ## Cross-Origin Resource Sharing
+      This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+      And that allows cross-domain communication from the browser.
+  version: "1.0.0"
+  contact:
+    name: "The Sun Reader API support"
+    email: "nasevich.vlasd.03@gmail.com"
+  x-logo:
+    url: '../react-ui/src/assets/icons/sun_favicon_round.png'
+    altText: The Sun Reader logo
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: "Explore project's GitHub repository"
+  url: 'https://github.com/watisluv1910/mirea_5s_server-side-development_course-work.git'
+x-tagGroups:
+  - name: User Management
+    description: "User management related tasks."
+    tags:
+      - Authentication
+      - Token
+      - User
+  - name: Bookmark Management
+    tags:
+      - Bookmark
+paths:
+  /api/auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: "Register a new user"
+      description: "Register a new user with given credentials."
+      operationId: "register"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "200":
+          description: >
+            Successfully registered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: "Login a user"
+      description: "Login a user with given credentials."
+      operationId: "login"
+      requestBody:
+        $ref: "#/components/requestBodies/LoginRequest"
+      responses:
+        "202":
+          description: >
+            Successfully authenticated.
+          headers:
+            Set-Cookie:
+              description: "Set an access token cookie."
+              schema:
+                $ref: '#/components/schemas/AccessTokenCookie'
+            "\0Set-Cookie":
+              description: "Set a refresh token cookie"
+              schema:
+                $ref: '#/components/schemas/RefreshTokenCookie'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "404":
+          description: "User not found"
+  /api/auth/refresh-token:
+    post:
+      tags:
+        - Token
+      summary: "Update access token"
+      description: "A token refresh request to update current authenticated user's access token."
+      operationId: "updateAccessToken"
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: >
+            Successfully updated access token.
+            The new access token is returned in a cookie.
+          headers:
+            Set-Cookie:
+              description: "Set an access token cookie."
+              schema:
+                $ref: '#/components/schemas/AccessTokenCookie'
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TokenRefreshResponse'
+  /api/user/bookmarks:
+    get:
+      tags:
+        - Bookmark
+      summary: "Get user's bookmarks"
+      description: "Get all current authenticated user's saved bookmarks."
+      operationId: "getAllBookmarks"
+      security:
+        - cookieAuth: [ ]
+      responses:
+        "200":
+          description: "Successfully retrieved bookmarks."
+          content:
+            'application/json':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserBookmark"
+  /api/user/bookmarks/add:
+    post:
+      tags:
+        - Bookmark
+      summary: "Add a bookmark"
+      description: "Add a new bookmark to a current authenticated user."
+      operationId: "addBookmark"
+      security:
+        - cookieAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookmarkRequest"
+        required: true
+      responses:
+        "200":
+          description: "Successful bookmark adding."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserBookmark"
+  /api/user/bookmarks/delete/{bookmarkId}:
+    delete:
+      tags:
+        - Bookmark
+      summary: "Delete a bookmark"
+      description: "Delete a specific bookmark by it's ID from authenticated user."
+      operationId: "deleteBookmark"
+      security:
+        - cookieAuth: [ ]
+      parameters:
+        - name: "bookmarkId"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityID'
+      responses:
+        "200":
+          description: "Successful bookmark deletion."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /api/test/admin:
+    get:
+      tags:
+        - User
+      summary: "Get admin test page access"
+      operationId: "adminAccess"
+      security:
+        - cookieAuth: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /api/test/moderator:
+    get:
+      tags:
+        - User
+      summary: "Get moderator test page access"
+      operationId: "moderatorAccess"
+      security:
+        - cookieAuth: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /api/test/user:
+    get:
+      tags:
+        - User
+      summary: "Get user test page access"
+      operationId: "userAccess"
+      security:
+        - cookieAuth: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: tsr-jwt-cookie
+  schemas:
+    AccessTokenCookie:
+      type: "string"
+      example: tsr-jwt-cookie=ancde12345; Path=/api; HttpOnly; Secure
+    RefreshTokenCookie:
+      type: "string"
+      example: tsr-jwt-refresh-cookie=dgfwd124124; Path=/api; HttpOnly; Secure
+    LoginRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+      required:
+        - username
+        - password
+    RegisterRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        userEmail:
+          type: "string"
+        password:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/EUserRole'
+      required:
+        - username
+        - userEmail
+        - password
+        - roles
+    CreateBookmarkRequest:
+      type: "object"
+      properties:
+        articleUrl:
+          type: "string"
+          maxLength: 2048
+        articleTitle:
+          type: "string"
+      required:
+        - articleUrl
+        - articleTitle
+    MessageResponse:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+      required:
+        - content
+    UserInfoResponse:
+      type: "object"
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityID'
+        username:
+          type: "string"
+        userEmail:
+          type: "string"
+        roleNames:
+          type: array
+          items:
+            $ref: '#/components/schemas/EUserRole'
+      required:
+        - id
+        - username
+        - userEmail
+        - roleNames
+    TokenExpirationResponse:
+      type: "object"
+      properties:
+        accessTokenExpiresAt:
+          type: "integer"
+          format: "int64"
+          description: "Unix-time of access token expiration in mills"
+        refreshTokenExpiresAt:
+          type: "integer"
+          format: "int64"
+          description: "Unix-time of refresh token expiration in mills"
+      required:
+        - accessTokenExpiresAt
+        - refreshTokenExpiresAt
+    TokenRefreshResponse:
+      type: "object"
+      properties:
+        accessTokenExpiresAt:
+          type: "integer"
+          format: "int64"
+          description: "Unix-time of access token expiration in mills"
+        message:
+          $ref: '#/components/schemas/MessageResponse'
+      required:
+        - accessTokenExpiresAt
+        - message
+    TokenRefreshExceptionResponse:
+      type: "object"
+      properties:
+        statusCode:
+          type: "integer"
+          format: "int32"
+          minimum: 100
+          maximum: 599
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        message:
+          type: "string"
+          maxLength: 256
+        description:
+          type: "string"
+      required:
+        - statusCode
+        - timestamp
+        - message
+    LoginResponse:
+      type: "object"
+      properties:
+        user:
+          $ref: '#/components/schemas/UserInfoResponse'
+        tokenExpiration:
+          $ref: '#/components/schemas/TokenExpirationResponse'
+      required:
+        - user
+        - tokenExpiration
+    Timestamp:
+      type: "object"
+      properties:
+        nanos:
+          type: "integer"
+          format: "int32"
+    EUserRole:
+      type: "string"
+      enum:
+        - "ROLE_USER"
+        - "ROLE_MODERATOR"
+        - "ROLE_ADMIN"
+    EntityID:
+      type: "integer"
+      format: "int64"
+    User:
+      type: "object"
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityID'
+        username:
+          type: "string"
+        password:
+          type: "string"
+        userEmail:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserRole"
+        bookmarks:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserBookmark"
+    UserRole:
+      type: "object"
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityID'
+        roleName:
+          $ref: '#/components/schemas/EUserRole'
+        users:
+          type: "array"
+          writeOnly: true
+          items:
+            $ref: "#/components/schemas/User"
+    UserBookmark:
+      type: "object"
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityID'
+        articleUrl:
+          type: "string"
+          maxLength: 2048
+        articleTitle:
+          type: "string"
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+  requestBodies:
+    LoginRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+      description: "User credentials"

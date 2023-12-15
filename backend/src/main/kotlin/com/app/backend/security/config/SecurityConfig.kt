@@ -3,6 +3,7 @@ package com.app.backend.security.config
 import com.app.backend.security.handler.RefreshTokenHandler
 import com.app.backend.security.handler.UnauthorizedHandler
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -56,7 +57,8 @@ class SecurityConfig(
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             authorizeHttpRequests {
-                authorize("/", permitAll)
+                authorize(EndpointRequest.toAnyEndpoint(), permitAll)
+                authorize("/favicon.ico", permitAll)
                 authorize("/api/auth/**", permitAll)
                 authorize("/api/user/**", hasAnyRole("USER"))
                 authorize("/api/**", authenticated)

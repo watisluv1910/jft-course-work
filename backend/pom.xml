@@ -137,6 +137,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>pl.project13.maven</groupId>
+			<artifactId>git-commit-id-plugin</artifactId>
+			<version>4.9.10</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.app</groupId>
 			<artifactId>database</artifactId>
 			<version>1.0.0</version>
@@ -164,6 +170,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${springframework.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<additionalProperties>
+								<encoding.source>UTF-8</encoding.source>
+								<encoding.reporting>UTF-8</encoding.reporting>
+								<java.source>${maven.compiler.source}</java.source>
+								<java.target>${maven.compiler.target}</java.target>
+							</additionalProperties>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -230,6 +252,33 @@
 				</executions>
 				<configuration>
 					<outputDir>${project.basedir}/target/documentation/dokka</outputDir>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.9.10</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>validate-the-git-infos</id>
+						<goals>
+							<goal>validateRevision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<runOnlyOnce>true</runOnlyOnce>
+					<dotGitDirectory>../.git</dotGitDirectory>
+					<failOnNoGitDirectory>false</failOnNoGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
 				</configuration>
 			</plugin>
 
