@@ -6,7 +6,7 @@ import {createContext, useContext} from 'react';
  * @constant
  * @type {React.Context}
  */
-export const BookmarksContext = createContext();
+export const BookmarksContext = createContext(undefined);
 
 /**
  * A custom hook that allows you to access the Bookmarks Context.

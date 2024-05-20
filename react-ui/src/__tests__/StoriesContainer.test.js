@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, cleanup, waitForElement} from '@testing-library/react';
-import {StoriesContainer} from '../containers/StoriesContainer';
-import {storiesIds, singularStory} from '../fixtures';
+import {StoriesContainer} from '../components/containers/StoriesContainer';
+import {storiesIds, singularStory} from './fixtures';
 import {getStory, getStoriesIds} from '../services/news.service';
 import {useInfiniteScroll} from '../hooks/useInfiniteScroll';
 import {STORY_INCREMENT} from '../data/constants';

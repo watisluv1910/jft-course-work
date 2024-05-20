@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {StoriesContainer} from './containers/StoriesContainer';
-import {eventBus} from './common/EventBus';
+import {StoriesContainer} from './components/containers/StoriesContainer';
+import {eventBus} from './utils/eventBus';
 import {AuthService} from './services/auth.service';
 import {Route, Routes} from 'react-router';
 import {Profile} from './components/Profile';
 import {Register} from './components/Register';
-import {Link} from 'react-router-dom';
 import {Login} from './components/Login';
 import {GlobalStyle} from './assets/styles/ResetStyles';
 import {BoardModerator} from './components/boards/BoardModerator';
@@ -56,7 +56,7 @@ export const App = () => {
         <>
             <BookmarksContext.Provider
                 value={{bookmarks, setBookmarks}}>
-                <GlobalStyle />
+                <GlobalStyle/>
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <img
@@ -113,9 +113,9 @@ export const App = () => {
                                     <a
                                         href="/"
                                         className="nav-link"
-                                        onClick={handleLogout}
+                                        onClick={() => eventBus.dispatch('logout', null)}
                                     >
-                                        Sign-out
+                                        Logout
                                     </a>
                                 </li>
                             </div>
@@ -143,23 +143,23 @@ export const App = () => {
                         <Routes>
                             <Route
                                 exact path={'/'}
-                                element={<StoriesContainer />}
+                                element={<StoriesContainer/>}
                             />
                             <Route
                                 exact path="/login"
-                                element={<Login />} />
+                                element={<Login/>}/>
                             <Route
                                 exact path="/register"
-                                element={<Register />} />
+                                element={<Register/>}/>
                             <Route
                                 exact path="/profile"
-                                element={<Profile />} />
+                                element={<Profile/>}/>
                             <Route exact path="/test/user"
-                                   element={<BoardUser />} />
+                                   element={<BoardUser/>}/>
                             <Route exact path="/test/moderator"
-                                   element={<BoardModerator />} />
+                                   element={<BoardModerator/>}/>
                             <Route exact path="/test/admin"
-                                   element={<BoardAdmin />} />
+                                   element={<BoardAdmin/>}/>
                         </Routes>
                     </div>
                 </div>

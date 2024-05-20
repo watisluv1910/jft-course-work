@@ -40,5 +40,5 @@ app.get('*',
         res.sendFile(
             path.resolve(__dirname, '../build', 'index.html'),
         ),
-    );
+);
 app.listen(frontendPort, () => console.log(`Server initialized on: http://${frontendServer}:${frontendPort} // ${new Date()}`));

@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {getStoriesIds} from '../services/news.service';
-import {Story} from '../components/Story';
-import {StoriesContainerWrapper} from '../assets/styles/StoriesContainerStyles';
-import {useInfiniteScroll} from '../hooks/useInfiniteScroll';
-import {useIntersectionObserver} from '../hooks/useIntersectionObserver';
-import {MAX_STORIES} from '../data/constants';
+import {getStoriesIds} from '../../services/news.service';
+import {Story} from '../Story';
+import {
+    StoriesContainerWrapper
+} from '../../assets/styles/StoriesContainerStyles';
+import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';
+import {useIntersectionObserver} from '../../hooks/useIntersectionObserver';
+import {MAX_STORIES} from '../../data/constants';
 
 /**
  * A component that renders a list of stories,
@@ -38,7 +40,7 @@ export const StoriesContainer = () => {
                     />
                 ))}
                 {count < MAX_STORIES && loading && <div>Loading...</div>}
-                <div ref={targetRef} />
+                <div ref={targetRef}/>
             </StoriesContainerWrapper>
         </>
     );

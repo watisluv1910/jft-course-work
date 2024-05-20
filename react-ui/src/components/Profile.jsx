@@ -1,4 +1,4 @@
-import {BookmarksContainer} from '../containers/BookmarksContainer';
+import {BookmarksContainer} from './containers/BookmarksContainer';
 import {useLocation} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,7 +8,7 @@ export const Profile = () => {
     return (
         <div className="container">
             <div className="card">
-                <div className="card-body text-center" >
+                <div className="card-body text-center">
                     <img
                         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                         alt="Profile ico"
@@ -31,7 +31,7 @@ export const Profile = () => {
                     <h3>Saved news</h3>
                 </div>
                 <div className="card-body">
-                    <BookmarksContainer />
+                    <BookmarksContainer/>
                 </div>
             </div>
         </div>
