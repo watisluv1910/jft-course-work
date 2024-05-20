@@ -1,10 +1,12 @@
 package com.app.backend.security.config
 
-import com.app.backend.security.handler.RefreshTokenHandler
-import com.app.backend.security.handler.UnauthorizedHandler
+import com.app.backend.security.filter.AccessTokenExpirationFilter
+import com.app.backend.security.filter.AuthenticationFilter
+import com.app.backend.security.handler.UnauthorizedExceptionHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -23,10 +25,10 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 @EnableWebSecurity
 @EnableMethodSecurity
 class SecurityConfig(
-    val authFilter: AuthFilter,
-    val unauthorizedHandler: UnauthorizedHandler,
-    val refreshTokenHandler: RefreshTokenHandler,
-    val authenticationManager: AuthManager
+    private val authenticationFilter: AuthenticationFilter,
+    private val accessTokenExpirationFilter: AccessTokenExpirationFilter,
+    private val unauthorizedExceptionHandler: UnauthorizedExceptionHandler,
+    private val authenticationManager: AuthenticationManager
 ) {
 
     @Value("\${tsr.app.jwt-cookie-name}")
@@ -58,14 +60,17 @@ class SecurityConfig(
             authorizeHttpRequests {
                 authorize("/", permitAll)
                 authorize("/api/auth/**", permitAll)
-                authorize("/api/user/**", hasAnyRole("USER"))
-                authorize("/api/**", authenticated)
-                authorize(anyRequest, denyAll)
+                authorize(anyRequest, authenticated)
             }
             logout {
                 logoutUrl = "/api/auth/logout"
-//                addLogoutHandler(refreshTokenHandler)
-                addLogoutHandler(CookieClearingLogoutHandler(jwtCookieName, jwtRefreshCookieName))
+                clearAuthentication = true
+                addLogoutHandler(
+                    CookieClearingLogoutHandler(
+                        jwtCookieName,
+                        jwtRefreshCookieName
+                    )
+                )
                 addLogoutHandler(
                     HeaderWriterLogoutHandler(
                         ClearSiteDataHeaderWriter(
@@ -73,9 +78,9 @@ class SecurityConfig(
                         )
                     )
                 )
-                permitAll = true
             }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(authFilter)
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(authenticationFilter)
+            addFilterBefore<AuthenticationFilter>(accessTokenExpirationFilter)
         }
 
         http.authenticationManager(authenticationManager)

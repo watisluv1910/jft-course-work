@@ -35,19 +35,17 @@ export const App = () => {
                 .then((data) => setBookmarks(data));
         }
 
-        const handleLogoutEvent = () => {
-            handleLogout();
-        };
-
-        eventBus.on('logout', handleLogoutEvent);
+        eventBus.on('logout', handleLogout);
 
         return () => {
-            eventBus.remove('logout', handleLogoutEvent);
+            eventBus.remove('logout', handleLogout);
         };
     }, []);
 
     const handleLogout = () => {
-        AuthService.logout().then((res) => console.log(res.message));
+        AuthService.logout().then();
+
+        localStorage.clear();
 
         setShowModeratorBoard(false);
         setShowAdminBoard(false);

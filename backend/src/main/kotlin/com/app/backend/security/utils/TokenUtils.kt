@@ -243,9 +243,6 @@ class TokenUtils(
 
     }
 
-    fun isRefreshTokenSaved(token: String) =
-        refreshTokenRepository.existsByToken(token)
-
     /**
      * Validates the provided JWT token.
      *

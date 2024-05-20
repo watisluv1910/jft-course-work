@@ -1,12 +1,12 @@
-package com.app.backend.security.config
+package com.app.backend.security.filter
 
 import com.app.backend.repo.UserRepository
-import com.app.backend.security.token.TokenUtils
+import com.app.backend.security.utils.TokenUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.lang.NonNull
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -18,12 +18,14 @@ import java.io.IOException
  * This filter is used for JWT token authentication filtering.
  *
  * Extends [OncePerRequestFilter] to guarantee a single execution per request dispatch.
+ *
+ * @author Vladislav Nasevich
  */
 @Component
-class AuthFilter(
-    val tokenUtils: TokenUtils,
-    val userRepository: UserRepository,
-    val authManager: AuthManager
+class AuthenticationFilter(
+    private val tokenUtils: TokenUtils,
+    private val userRepository: UserRepository,
+    private val authenticationManager: AuthenticationManager
 ) : OncePerRequestFilter() {
 
     /**
@@ -41,18 +43,20 @@ class AuthFilter(
      */
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
-        @NonNull request: HttpServletRequest,
-        @NonNull response: HttpServletResponse,
-        @NonNull filterChain: FilterChain
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
     ) {
+        logger.debug("Authentication filter call: ${request.requestURL}")
+
         try {
             val token = tokenUtils.getAccessTokenFromCookies(request)
-            if (!token.isNullOrEmpty()
+            if (!token.isNullOrBlank()
                 && tokenUtils.validateToken(token)
                 && SecurityContextHolder.getContext().authentication == null
             ) {
                 val foundUser = userRepository.findOneByUsername(tokenUtils.extractUsername(token))
-                val authentication = authManager.authenticate(
+                val authentication = authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken.unauthenticated(
                         foundUser.username,
                         foundUser.password

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
  * @property userDetailsService The service for loading user details during authentication.
  */
 @Component
-class AuthManager(
+class AuthenticationManagerImpl(
     private val userRepository: UserRepository,
     private val userDetailsService: UserDetailsServiceImpl
 ): AuthenticationManager {

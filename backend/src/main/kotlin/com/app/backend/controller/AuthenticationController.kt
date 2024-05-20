@@ -50,7 +50,7 @@ class AuthenticationController(
         val (
             accessTokenCookie,
             refreshTokenCookie,
-            tokenExpiration,
+            refreshTokenExpirationDate,
             userInfo
         ) = authenticationService.login(request)
         return ResponseEntity
@@ -62,30 +62,7 @@ class AuthenticationController(
             ).body(
                 LoginResponse(
                     user = userInfo,
-                    tokenExpiration = tokenExpiration
-                )
-            )
-    }
-
-    /**
-     * Handle the refresh token request.
-     *
-     * @param request The [TokenRefreshRequest] payload containing the current refresh token.
-     * @return [ResponseEntity] containing details of the refresh operation including a new JWT token or an error message.
-     */
-    @PostMapping("/refresh-token")
-    fun updateAccessToken(request: HttpServletRequest): ResponseEntity<*> {
-        val response = authenticationService.updateAccessToken(request)
-        return ResponseEntity
-            .ok()
-            .header(
-                HttpHeaders.SET_COOKIE,
-                response.accessTokenCookie
-            )
-            .body(
-                TokenRefreshResponse(
-                    accessTokenExpiresAt = response.accessTokenExpiresAt,
-                    message = response.message
+                    refreshTokenExpirationDate = refreshTokenExpirationDate
                 )
             )
     }
