@@ -52,7 +52,7 @@ class SecurityConfig(
             }
             cors {  }
             exceptionHandling {
-                authenticationEntryPoint = unauthorizedHandler
+                authenticationEntryPoint = unauthorizedExceptionHandler
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS

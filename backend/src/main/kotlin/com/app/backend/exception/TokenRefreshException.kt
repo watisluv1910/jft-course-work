@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus
 /**
  * Thrown when an operation regarding token refreshment fails.
  *
- *
  * Responds with a status of [HttpStatus.FORBIDDEN].
+ *
+ * @author Vladislav Nasevich
  */
 @ResponseStatus(HttpStatus.FORBIDDEN)
 class TokenRefreshException(

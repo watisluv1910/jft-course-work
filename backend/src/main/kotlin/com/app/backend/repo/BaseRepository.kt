@@ -9,11 +9,12 @@ import org.springframework.data.repository.NoRepositoryBean
  * This interface extends [JpaRepository] and provides additional common functionality.
  *
  * @param T entity type managed by the repository.
+ * @author Vladislav Nasevich
  * @see [JpaRepository]
  */
 @NoRepositoryBean
 @JvmDefaultWithCompatibility
-interface BaseRepository<T>: JpaRepository<T, Long?> {
+interface BaseRepository<T> : JpaRepository<T, Long?> {
 
     /**
      * Retrieves an entity by its ID.
@@ -22,5 +23,8 @@ interface BaseRepository<T>: JpaRepository<T, Long?> {
      * @return the entity with the specified ID.
      * @throws IllegalArgumentException if the entity with the given ID is not found.
      */
-    fun getExisted(id: Long): T = findById(id).orElseThrow { IllegalArgumentException("Entity with id=$id not found") }
+    fun getExisted(id: Long): T =
+        findById(id).orElseThrow {
+            IllegalArgumentException("Entity with id=$id not found")
+        }
 }

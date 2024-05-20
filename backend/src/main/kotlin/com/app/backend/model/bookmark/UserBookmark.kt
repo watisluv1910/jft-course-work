@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.sql.Timestamp
 
-
 @Entity
 @Table(name = "sn_user_bookmark", schema = "jft_database")
 class UserBookmark {
@@ -29,4 +28,3 @@ class UserBookmark {
     @field:JoinColumn(name = "user_id", nullable = false)
     lateinit var user: User
 }
-

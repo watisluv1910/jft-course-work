@@ -1,13 +1,14 @@
 package com.app.backend.config
 
+import com.app.backend.config.EnvironmentConfiguration.Companion.log
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.env.EnvironmentPostProcessor
 import org.springframework.boot.logging.DeferredLog
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationListener
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.PropertiesPropertySource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -20,8 +21,9 @@ import java.util.*
  * environment variables from a specified file (e.g., ".env") during application startup.
  *
  * @property log DeferredLog instance for logging.
+ * @author Vladislav Nasevich
  */
-@Component
+@Configuration
 class EnvironmentConfiguration :
     EnvironmentPostProcessor,
     ApplicationListener<ApplicationEvent?> {
@@ -31,7 +33,10 @@ class EnvironmentConfiguration :
      * @param environment the environment to post-process
      * @param application the application to which the environment belongs
      */
-    override fun postProcessEnvironment(environment: ConfigurableEnvironment, application: SpringApplication) {
+    override fun postProcessEnvironment(
+        environment: ConfigurableEnvironment,
+        application: SpringApplication
+    ) {
         loadEnvFile(environment)
     }
 
@@ -47,7 +52,8 @@ class EnvironmentConfiguration :
                 FileInputStream(envFile).use { fileInputStream ->
                     val properties = Properties()
                     properties.load(fileInputStream)
-                    val propertySource = PropertiesPropertySource("dotenv", properties)
+                    val propertySource =
+                        PropertiesPropertySource("dotenv", properties)
                     environment.propertySources.addFirst(propertySource)
                     log.info("Loaded environment variables from the environment file: " + envFile.absolutePath)
                 }

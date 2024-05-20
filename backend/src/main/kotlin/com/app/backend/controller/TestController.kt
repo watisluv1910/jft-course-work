@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Controller for testing role-based access control.
  * Defines endpoints that can be accessed depending on user's role.
+ *
+ * @author Vladislav Nasevich
  */
 @RestController
 @RequestMapping("/api/test")

@@ -4,7 +4,6 @@ import com.app.backend.model.user.User
 import jakarta.persistence.*
 import java.sql.Timestamp
 
-
 @Entity
 @Table(name = "sn_jwt_refresh_token", schema = "jft_database")
 class UserRefreshToken {

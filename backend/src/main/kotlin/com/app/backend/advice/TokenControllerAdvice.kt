@@ -15,6 +15,7 @@ import java.sql.Timestamp
  * This class provides methods to handle specific exceptions related to access token refresh.
  *
  * @constructor Creates a new instance of [TokenControllerAdvice].
+ * @author Vladislav Nasevich
  */
 @RestControllerAdvice
 class TokenControllerAdvice {
@@ -28,7 +29,10 @@ class TokenControllerAdvice {
      */
     @ExceptionHandler(value = [TokenRefreshException::class])
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    fun handleTokenRefreshException(e: TokenRefreshException, request: WebRequest): TokenRefreshExceptionResponse {
+    fun handleTokenRefreshException(
+        e: TokenRefreshException,
+        request: WebRequest
+    ): TokenRefreshExceptionResponse {
         return TokenRefreshExceptionResponse(
             HttpStatus.FORBIDDEN.value(),
             Timestamp(System.currentTimeMillis()),

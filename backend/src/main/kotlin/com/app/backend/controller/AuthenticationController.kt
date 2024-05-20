@@ -2,11 +2,8 @@ package com.app.backend.controller
 
 import com.app.backend.payload.user.request.LoginRequest
 import com.app.backend.payload.user.request.RegisterRequest
-import com.app.backend.payload.user.request.TokenRefreshRequest
 import com.app.backend.payload.user.response.LoginResponse
-import com.app.backend.payload.token.response.TokenRefreshResponse
 import com.app.backend.security.service.AuthenticationService
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController
  * as well as to register, login, and logout users.
  *
  * @property authenticationService service for handling authentication operations.
+ * @author Vladislav Nasevich
+ * @see AuthenticationService
  */
 @RestController
 @RequestMapping("/api/auth")

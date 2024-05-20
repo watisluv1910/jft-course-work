@@ -113,6 +113,8 @@ class UserBookmarkService(
         return deleteById(bookmarkId, user)
     }
 
+    fun findAll(): List<UserBookmark> = userBookmarkRepository.findAll()
+
     /**
      * Retrieves all bookmarks for a specified user.
      *
@@ -129,6 +131,7 @@ class UserBookmarkService(
      * @return list of [UserBookmark] objects representing all bookmarks of the user.
      * @throws NoSuchElementException if the user is not found.
      */
+    @Transactional
     fun findAllByUserId(userId: Long): List<UserBookmark> {
         userRepository.getExisted(userId)
         return userBookmarkRepository.findAllByUserId(userId) ?: listOf()
@@ -140,6 +143,7 @@ class UserBookmarkService(
      * @param username username of the user for whom the bookmarks are to be retrieved.
      * @return list of [UserBookmark] objects representing all bookmarks of the user.
      */
+    @Transactional
     fun findAllByUsername(username: String): List<UserBookmark> {
         val user = userRepository.findOneByUsername(username)
         return findAllByUser(user)

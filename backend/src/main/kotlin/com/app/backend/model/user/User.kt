@@ -2,10 +2,10 @@ package com.app.backend.model.user
 
 import com.app.backend.model.bookmark.UserBookmark
 import com.app.backend.model.user.role.UserRole
+import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
-
 
 @Entity
 @Table(name = "sn_user", schema = "jft_database")
@@ -26,19 +26,35 @@ class User {
     var userEmail: String? = null
 
     @field:ManyToMany(
-        fetch = FetchType.LAZY,
+        fetch = FetchType.EAGER,
         cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH]
     )
     @field:JoinTable(
         name = "sn_user_roles",
-        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+        joinColumns = [JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id"
+        )],
+        inverseJoinColumns = [JoinColumn(
+            name = "role_id",
+            referencedColumnName = "id"
+        )]
     )
     @field:JsonIgnoreProperties("users")
     var roles: MutableSet<UserRole> = mutableSetOf()
 
-    @field:OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @field:OneToMany(
+        mappedBy = "user",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
     @field:JsonManagedReference
     var bookmarks: MutableSet<UserBookmark> = mutableSetOf()
-}
 
+    @field:OneToOne(
+        mappedBy = "user",
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.REMOVE]
+    )
+    var refreshToken: UserRefreshToken? = null
+}

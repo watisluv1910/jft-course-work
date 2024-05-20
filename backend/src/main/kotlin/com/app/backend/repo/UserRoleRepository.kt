@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository
  *
  * This interface extends [BaseRepository] and provides methods for querying user roles.
  *
- * @see BaseRepository
  * @property UserRole entity type representing a user role.
+ * @author Vladislav Nasevich
+ * @see BaseRepository
  */
 @Repository
 interface UserRoleRepository: BaseRepository<UserRole> {
