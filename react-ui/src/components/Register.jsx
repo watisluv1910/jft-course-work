@@ -7,8 +7,8 @@ import {
     validateEmail,
     validatePassword,
     validateUsername,
-} from '../utils/validation';
-import {required} from '../utils/required';
+} from './utils/validation';
+import {required} from './utils/required';
 
 /**
  * A component that provides a registration form for users to create an account.

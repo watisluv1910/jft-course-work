@@ -5,7 +5,7 @@ import Input from 'react-validation/build/input';
 import CheckButton from 'react-validation/build/button';
 
 import {AuthService} from '../services/auth.service';
-import {required} from '../utils/required';
+import {required} from './utils/required';
 
 /**
  * A component that provides a login form for users to authenticate an account.
