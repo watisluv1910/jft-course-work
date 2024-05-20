@@ -6,7 +6,7 @@ COPY schema.sql .
 
 RUN apk update && apk add bash
 
-RUN sed "s/\${DB_SCHEMA}/$DB_SCHEMA/g" schema.sql > schema_modified.sql
+RUN sed "s/\$DB_SCHEMA/$DB_SCHEMA/g" schema.sql > schema_modified.sql
 
 FROM mysql:latest
 
