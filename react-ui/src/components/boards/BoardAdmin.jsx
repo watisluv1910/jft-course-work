@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {BoardsService} from '../services/boards.service';
+import {BoardsService} from '../../services/boards.service';
 
 export const BoardAdmin = () => {
     const [content, setContent] = useState('');

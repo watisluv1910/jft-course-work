@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {BoardsService} from '../services/boards.service';
+import {BoardsService} from '../../services/boards.service';
 
-export const BoardModerator = () => {
+export const BoardUser = () => {
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        BoardsService.getModeratorBoard().then(
+        BoardsService.getUserBoard().then(
             (response) => {
                 setContent(response.data);
             },
