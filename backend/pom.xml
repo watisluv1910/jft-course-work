@@ -224,12 +224,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.2</version>
-			</plugin>
-
-			<plugin>
 				<groupId>org.jetbrains.dokka</groupId>
 				<artifactId>dokka-maven-plugin</artifactId>
 				<version>${dokka.version}</version>
@@ -251,19 +245,6 @@
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${maven-enforcer-plugin.version}</version>
 				<executions>
-					<execution>
-						<id>enforce-maven</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireMavenVersion>
-									<version>3.6.0</version>
-								</requireMavenVersion>
-							</rules>
-						</configuration>
-					</execution>
 					<execution>
 						<id>enforce-java</id>
 						<goals>
