@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*
  * All endpoints are secured with the 'USER' role using [PreAuthorize].
  *
  * @property userBookmarkService The service for managing user bookmarks.
+ * @author Vladislav Nasevich
  */
 @RestController
 @PreAuthorize("hasRole('USER')")
@@ -36,11 +37,10 @@ class BookmarkController(
     fun addBookmark(
         @RequestBody request: CreateBookmarkRequest,
         @AuthenticationPrincipal username: String
-    ) =
-        ResponseEntity<UserBookmark>(
-            userBookmarkService.createBookmark(request, username),
-            HttpStatus.CREATED
-        )
+    ) = ResponseEntity<UserBookmark>(
+        userBookmarkService.createBookmark(request, username),
+        HttpStatus.CREATED
+    )
 
     /**
      * Deletes a bookmark for the authenticated user by bookmark ID.
@@ -53,11 +53,10 @@ class BookmarkController(
     fun deleteBookmark(
         @PathVariable bookmarkId: Long,
         @AuthenticationPrincipal username: String
-    ) =
-        ResponseEntity<MessageResponse>(
-            userBookmarkService.deleteById(bookmarkId, username),
-            HttpStatus.NO_CONTENT
-        )
+    ) = ResponseEntity<MessageResponse>(
+        userBookmarkService.deleteById(bookmarkId, username),
+        HttpStatus.NO_CONTENT
+    )
 
     /**
      * Retrieves all bookmarks for the authenticated user.
@@ -66,10 +65,10 @@ class BookmarkController(
      * @return A [ResponseEntity] with a list of [UserBookmark] objects and HTTP status code 200.
      */
     @GetMapping
-    fun getAllBookmarks(
+    fun getAllBookmarksForUser(
         @AuthenticationPrincipal username: String
     ) = ResponseEntity<List<UserBookmark>>(
-            userBookmarkService.findAllByUsername(username),
-            HttpStatus.OK
-        )
+        userBookmarkService.findAllByUsername(username),
+        HttpStatus.OK
+    )
 }

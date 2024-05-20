@@ -2,11 +2,8 @@ package com.app.backend.controller
 
 import com.app.backend.payload.user.request.LoginRequest
 import com.app.backend.payload.user.request.RegisterRequest
-import com.app.backend.payload.user.request.TokenRefreshRequest
 import com.app.backend.payload.user.response.LoginResponse
-import com.app.backend.payload.token.response.TokenRefreshResponse
 import com.app.backend.security.service.AuthenticationService
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController
  * as well as to register, login, and logout users.
  *
  * @property authenticationService service for handling authentication operations.
+ * @author Vladislav Nasevich
+ * @see AuthenticationService
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -50,7 +49,7 @@ class AuthenticationController(
         val (
             accessTokenCookie,
             refreshTokenCookie,
-            tokenExpiration,
+            refreshTokenExpirationDate,
             userInfo
         ) = authenticationService.login(request)
         return ResponseEntity
@@ -62,30 +61,7 @@ class AuthenticationController(
             ).body(
                 LoginResponse(
                     user = userInfo,
-                    tokenExpiration = tokenExpiration
-                )
-            )
-    }
-
-    /**
-     * Handle the refresh token request.
-     *
-     * @param request The [TokenRefreshRequest] payload containing the current refresh token.
-     * @return [ResponseEntity] containing details of the refresh operation including a new JWT token or an error message.
-     */
-    @PostMapping("/refresh-token")
-    fun updateAccessToken(request: HttpServletRequest): ResponseEntity<*> {
-        val response = authenticationService.updateAccessToken(request)
-        return ResponseEntity
-            .ok()
-            .header(
-                HttpHeaders.SET_COOKIE,
-                response.accessTokenCookie
-            )
-            .body(
-                TokenRefreshResponse(
-                    accessTokenExpiresAt = response.accessTokenExpiresAt,
-                    message = response.message
+                    refreshTokenExpirationDate = refreshTokenExpirationDate
                 )
             )
     }

@@ -4,7 +4,10 @@ import {BrowserRouter} from 'react-router-dom';
 
 import {App} from './App';
 
-createRoot(document.getElementById('root')).render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
     <BrowserRouter>
         <App/>
     </BrowserRouter>,
@@ -12,7 +15,9 @@ createRoot(document.getElementById('root')).render(
 
 const devMode = process.env.NODE_ENV === 'development';
 
-// Code for Webpack to allow changes acception through hot
+/**
+ * Allow changes acceptance through hot
+ */
 if (devMode && module && module.hot) {
     module.hot.accept();
 }

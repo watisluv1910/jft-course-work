@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository
  *
  * This interface extends [BaseRepository] and provides methods for querying user entities.
  *
- * @see BaseRepository
  * @property [User] the entity type representing a user.
+ * @author Vladislav Nasevich
+ * @see BaseRepository
  */
 @Repository
 interface UserRepository: BaseRepository<User> {

@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails
 /**
  * Custom implementation of Spring Security's [UserDetails].
  *
- *
  * Includes the user's id, username, email, password and the list of roles assigned to the user.
+ *
+ * @author Vladislav Nasevich
  */
 class UserDetailsImpl: UserDetails {
 

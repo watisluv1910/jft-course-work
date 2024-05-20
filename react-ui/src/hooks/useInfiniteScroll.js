@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {STORY_INCREMENT, MAX_STORIES} from '../data/constants';
+import {useEffect, useState} from 'react';
+import {MAX_STORIES, STORY_INCREMENT} from '../data/constants';
 import {debounce} from '../utils/debounce';
 
 /**

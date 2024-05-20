@@ -13,7 +13,7 @@ set "TMP_INIT_SCRIPT=temp_schema.sql"
 
 copy /Y %INIT_SCRIPT% %TMP_INIT_SCRIPT%
 
-set "search=${DB_SCHEMA}"
+set "search=$DB_SCHEMA"
 set "replace=%MYSQL_DATABASE%"
 
 for /f "delims=" %%i in ('type "%TMP_INIT_SCRIPT%" ^& break ^> "%TMP_INIT_SCRIPT%" ') do (

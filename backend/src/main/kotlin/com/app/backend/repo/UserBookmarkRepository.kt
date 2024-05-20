@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository
  *
  * This interface extends [BaseRepository] and provides methods for querying user bookmarks.
  *
- * @see BaseRepository
  * @property [UserBookmark] entity type representing a user bookmark.
+ * @author Vladislav Nasevich
+ * @see BaseRepository
  */
 @Repository
-interface UserBookmarkRepository: BaseRepository<UserBookmark> {
+interface UserBookmarkRepository : BaseRepository<UserBookmark> {
 
     /**
      * Finds all user bookmarks associated with the specified user ID.

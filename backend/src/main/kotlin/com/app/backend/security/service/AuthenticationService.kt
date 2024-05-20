@@ -4,24 +4,25 @@ import com.app.backend.model.user.User
 import com.app.backend.model.user.UserDetailsImpl
 import com.app.backend.model.user.role.EUserRole
 import com.app.backend.payload.MessageResponse
-import com.app.backend.payload.token.response.TokenExpirationResponse
+import com.app.backend.payload.token.response.TokenRefreshInternalResponse
 import com.app.backend.payload.user.request.LoginRequest
 import com.app.backend.payload.user.request.RegisterRequest
 import com.app.backend.payload.user.response.LoginInternalResponse
-import com.app.backend.payload.token.response.TokenRefreshInternalResponse
 import com.app.backend.payload.user.response.UserInfoResponse
 import com.app.backend.repo.UserRepository
 import com.app.backend.repo.UserRoleRepository
-import com.app.backend.security.config.AuthManager
-import com.app.backend.security.token.TokenUtils
+import com.app.backend.security.config.AuthenticationManagerImpl
+import com.app.backend.security.utils.TokenUtils
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
-import java.util.*
+import java.util.Date
 
 /**
  * Service class handling user authentication operations such as registration and login.
@@ -31,7 +32,7 @@ import java.util.*
  * @property userRepository repository for managing user entities.
  * @property userRoleRepository repository for managing user roles.
  * @property userDetailsService service for managing user details.
- * @property authManager custom authentication manager.
+ * @property authenticationManager custom authentication manager.
  * @property passwordEncoder custom password encoder.
  * @property tokenUtils utility class for handling JWT tokens.
  */
@@ -40,7 +41,7 @@ class AuthenticationService(
     val userRepository: UserRepository,
     val userRoleRepository: UserRoleRepository,
     val userDetailsService: UserDetailsServiceImpl,
-    val authManager: AuthManager,
+    val authenticationManager: AuthenticationManager,
     val passwordEncoder: PasswordEncoder,
     val tokenUtils: TokenUtils
 ) {
@@ -59,8 +60,9 @@ class AuthenticationService(
         val (user, roleNames) = request.toModel()
 
         if (userRepository.existsByUsername(user.username) ||
-            userRepository.existsByUserEmail(user.userEmail)) {
-            throw IllegalArgumentException("Provided user is already registered")
+            userRepository.existsByUserEmail(user.userEmail)
+        ) {
+            return MessageResponse("Provided user is already registered")
         } else {
             user.apply { password = passwordEncoder.encode(password) }
             for (roleName in roleNames) addRoleToUser(user, roleName)
@@ -68,17 +70,15 @@ class AuthenticationService(
 
         userRepository.save(user)
 
-        return MessageResponse(
-            "The user ${user.username} registered successfully."
-        )
+        return MessageResponse("The user ${user.username} registered successfully.")
     }
 
     /**
      * Logs in a user based on the provided login request.
      *
-     * Authenticates the user using the [authentication manager][AuthManager], sets the authentication in the security context,
+     * Authenticates the user using the [authentication manager][AuthenticationManagerImpl], sets the authentication in the security context,
      * generates access and refresh tokens, and returns a response
-     * containing [token details][TokenExpirationResponse] and [user information][UserInfoResponse].
+     * containing [token details][LoginInternalResponse] and [user information][UserInfoResponse].
      *
      * @param request [LoginRequest] containing user login details.
      * @return [LoginInternalResponse] containing access and refresh tokens, token expiration details, and user information.
@@ -87,7 +87,7 @@ class AuthenticationService(
     fun login(request: LoginRequest): LoginInternalResponse {
         val foundUser = userRepository.findOneByUsername(request.username)
 
-        val authentication = authManager.authenticate(
+        val authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 foundUser.username,
                 foundUser.password
@@ -96,15 +96,14 @@ class AuthenticationService(
 
         SecurityContextHolder.getContext().authentication = authentication
 
-        val userDetails = userDetailsService.loadUserByUsername(foundUser.username!!) as UserDetailsImpl
+        val userDetails =
+            userDetailsService.loadUserByUsername(foundUser.username!!) as UserDetailsImpl
 
         return LoginInternalResponse(
             tokenUtils.generateAccessTokenCookie(foundUser).toString(),
-            tokenUtils.generateRefreshTokenCookie(userDetails, foundUser).toString(),
-            TokenExpirationResponse(
-                accessTokenExpiresAt = Date(System.currentTimeMillis() + tokenUtils.accessTokenExpirationMs.toLong()),
-                refreshTokenExpiresAt = Date(System.currentTimeMillis() + tokenUtils.refreshTokenExpirationMs.toLong())
-            ),
+            tokenUtils.generateRefreshTokenCookie(userDetails, foundUser)
+                .toString(),
+            System.currentTimeMillis() + tokenUtils.refreshTokenExpirationMs.toLong(),
             UserInfoResponse.build(foundUser)
         )
     }
@@ -116,16 +115,18 @@ class AuthenticationService(
      * @return [TokenRefreshInternalResponse] containing the updated access token and expiration details.
      * @throws ResponseStatusException if the provided refresh token is not valid.
      */
+    @Transactional
     fun updateAccessToken(request: HttpServletRequest): TokenRefreshInternalResponse {
         val refreshToken = tokenUtils.getRefreshTokenFromCookies(request)
         if (!refreshToken.isNullOrBlank() &&
-            tokenUtils.validateToken(refreshToken) &&
-            tokenUtils.isRefreshTokenSaved(refreshToken)
+            tokenUtils.validateToken(refreshToken)
         ) {
             val username = tokenUtils.extractUsername(refreshToken)
             val foundUser = userRepository.findOneByUsername(username)
             return TokenRefreshInternalResponse(
-                accessTokenCookie = tokenUtils.generateAccessTokenCookie(foundUser).toString(),
+                accessTokenCookie = tokenUtils.generateAccessTokenCookie(
+                    foundUser
+                ).toString(),
                 accessTokenExpiresAt = Date(
                     System.currentTimeMillis() + tokenUtils.accessTokenExpirationMs.toLong()
                 ),

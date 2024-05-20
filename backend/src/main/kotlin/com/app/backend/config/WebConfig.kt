@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
  * Configures Cross-Origin Resource Sharing (CORS) for the application.
+ *
+ * @author Vladislav Nasevich
  */
 @Configuration
 @EnableWebMvc

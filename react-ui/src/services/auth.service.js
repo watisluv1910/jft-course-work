@@ -1,5 +1,22 @@
 import api from '../config/api';
 
+api.interceptors.request.use((config) => {
+    const controller = new AbortController();
+    if (isRefreshTokenExpired()) {
+        try {
+            controller.abort();
+            localStorage.clear();
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    }
+    return {
+        ...config,
+        signal: controller.signal,
+    };
+}, (error) => Promise.reject(error));
+
 const authUrl = `/auth/`;
 
 /**
@@ -12,12 +29,9 @@ const authUrl = `/auth/`;
  * @return {Promise<AxiosResponse<any>>} Axios promise
  * that returns the server's response.
  */
-const register = (username, userEmail, password) => {
+const register = function (username, userEmail, password) {
     return api.post(authUrl + 'register', {
-        username,
-        userEmail,
-        password,
-        roles: ['ROLE_USER', 'ROLE_MODERATOR'],
+        username, userEmail, password, roles: ['ROLE_USER', 'ROLE_MODERATOR'],
     }).catch((e) => console.error(e.message));
 };
 
@@ -31,22 +45,20 @@ const register = (username, userEmail, password) => {
  * @return {Promise<object>} A promise that resolves
  * with the authenticated user's data.
  */
-const login = (username, password) => {
-    console.log('Login here');
+const login = function (username, password) {
     return api.post(authUrl + 'login', {
-        username,
-        password,
+        username, password,
     }).then((response) => {
         if (response.data.user) {
             localStorage.setItem(
                 'user',
-                JSON.stringify(response.data.user),
+                JSON.stringify(response.data.user)
             );
         }
-        if (response.data.tokenExpiration) {
+        if (response.data.refreshTokenExpirationDate) {
             localStorage.setItem(
-                'token_expiration',
-                JSON.stringify(response.data.tokenExpiration),
+                'refresh-token_expiration',
+                JSON.stringify(response.data.refreshTokenExpirationDate)
             );
         }
         return response.data;
@@ -61,29 +73,12 @@ const login = (username, password) => {
  * @return {Promise<object>} A promise that resolves
  * with the server's response data.
  */
-const logout = () => {
-    localStorage.clear();
-    return api.post(authUrl + 'logout')
-        .then((response) => response.data)
-        .catch((e) => console.error(e.message));
-};
-
-const refreshAccessToken = () => {
-    return api.post(authUrl + 'refresh-token')
-        .then((res) => {
-            const expiration = getTokenExpiration();
-            if (expiration) {
-                expiration['accessTokenExpiresAt'] =
-                    res.data.accessTokenExpiresAt;
-
-                localStorage.setItem(
-                    'token_expiration',
-                    JSON.stringify(expiration),
-                );
-            }
-            console.log(res.data.message.content);
-        })
-        .catch((err) => console.error('Error refreshing access token', err));
+const logout = async function () {
+    try {
+        await api.post(authUrl + 'logout');
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
 };
 
 /**
@@ -93,16 +88,27 @@ const refreshAccessToken = () => {
  * @return {object|null} The user data or null
  * if no user data exists in local storage.
  */
-const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));
+const getCurrentUser = function () {
+    return JSON.parse(localStorage.getItem('user'));
+}
 
-const getTokenExpiration = () =>
-    JSON.parse(localStorage.getItem('token_expiration'));
+const getRefreshTokenExpiration = function () {
+    return JSON.parse(localStorage.getItem('refresh-token_expiration'));
+}
+
+const isRefreshTokenExpired = function () {
+    if (localStorage.getItem('refresh-token_expiration') !== null) {
+        return getRefreshTokenExpiration() < Date.now();
+    }
+
+    return false;
+};
 
 export const AuthService = {
     register,
     login,
     logout,
-    refreshAccessToken,
     getCurrentUser,
-    getTokenExpiration,
+    getRefreshTokenExpiration,
+    isRefreshTokenExpired
 };

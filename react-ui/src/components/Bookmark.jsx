@@ -18,7 +18,9 @@ import {BookmarkButton} from './BookmarkButton';
  * @param {Object} props.bookmark - The bookmark data to display.
  * @return {JSX.Element} The rendered Bookmark component.
  * @example
- * <Bookmark bookmark={bookmarkData} />
+ * <Bookmark={bookmarkData} />
+ *
+ * @author Vladislav Nasevich
  */
 export const Bookmark = ({bookmark}) => {
     return (

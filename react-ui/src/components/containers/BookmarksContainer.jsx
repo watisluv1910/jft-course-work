@@ -1,6 +1,6 @@
 import React from 'react';
-import {useBookmarksContext} from '../contexts/useBookmarksContext';
-import {Bookmark} from '../components/Bookmark';
+import {useBookmarksContext} from '../../contexts/useBookmarksContext';
+import {Bookmark} from '../Bookmark';
 
 /**
  * A component that renders a list of bookmarked items.
@@ -8,7 +8,7 @@ import {Bookmark} from '../components/Bookmark';
  * the current bookmarks from the Bookmarks Context.
  *
  * @component
- * @return {React.Element} The rendered BookmarksContainer component.
+ * @return {React.JSX.Element} The rendered BookmarksContainer component.
  */
 export const BookmarksContainer = () => {
     const {bookmarks} = useBookmarksContext();

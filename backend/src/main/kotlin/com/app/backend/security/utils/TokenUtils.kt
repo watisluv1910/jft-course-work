@@ -1,10 +1,14 @@
-package com.app.backend.security.token
+package com.app.backend.security.utils
 
 import com.app.backend.model.user.User
 import com.app.backend.model.user.UserDetailsImpl
 import com.app.backend.model.user.token.UserRefreshToken
 import com.app.backend.repo.UserRefreshTokenRepository
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
@@ -19,13 +23,14 @@ import java.math.BigInteger
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
+import java.util.Date
 import javax.crypto.SecretKey
 
 /**
  * Utility class for managing JWT tokens and cookies related to user authentication.
  *
  * @property refreshTokenRepository repository for managing user [refresh tokens][UserRefreshToken].
+ * @author Vladislav Nasevich
  */
 @Component
 class TokenUtils(
@@ -242,9 +247,6 @@ class TokenUtils(
             )
 
     }
-
-    fun isRefreshTokenSaved(token: String) =
-        refreshTokenRepository.existsByToken(token)
 
     /**
      * Validates the provided JWT token.

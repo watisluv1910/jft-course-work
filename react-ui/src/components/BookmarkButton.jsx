@@ -18,6 +18,7 @@ import {useBookmarksContext} from '../contexts/useBookmarksContext';
  * @return {React.Element} The rendered BookmarkButton component.
  * @example
  * <BookmarkButton story={story} />
+ * @author Vladislav Nasevich
  */
 export const BookmarkButton = ({story}) => {
     const {bookmarks, setBookmarks} = useBookmarksContext();
@@ -26,7 +27,7 @@ export const BookmarkButton = ({story}) => {
         (bookmark) => bookmark.articleTitle === story.title,
     );
 
-    const getIcon =
+    const getBookmarkIcon =
         () => isBookmarked() ? bookmarkIconFilled : bookmarkIconOutline;
 
     const handleBookmarkClick = () => {
@@ -68,7 +69,7 @@ export const BookmarkButton = ({story}) => {
         <button onClick={handleBookmarkClick}
                 style={{border: 'none', background: 'none'}}>
             <img
-                src={getIcon()}
+                src={getBookmarkIcon()}
                 alt="Bookmark"
                 style={{width: '24px', aspectRatio: '1 / 1'}}
             />

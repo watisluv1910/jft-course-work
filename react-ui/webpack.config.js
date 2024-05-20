@@ -115,6 +115,11 @@ module.exports = {
                 '[id].bundle.css',
         }),
     ],
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        }
+    },
     devServer: {
         port: 3000,
         hot: true, // Helps to keep state in React and change only edited code

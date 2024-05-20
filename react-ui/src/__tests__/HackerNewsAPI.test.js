@@ -5,7 +5,7 @@ import {
     newStoriesUrl,
     storyUrl,
 } from '../services/news.service';
-import {singularStory, storiesIds, emptySingularStory} from '../fixtures';
+import {singularStory, storiesIds, emptySingularStory} from './fixtures';
 import {beforeEach, describe, it} from 'node:test';
 import jest from 'jest';
 import expect from 'expect';

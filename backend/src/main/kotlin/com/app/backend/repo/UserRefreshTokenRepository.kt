@@ -2,7 +2,6 @@ package com.app.backend.repo
 
 import com.app.backend.model.user.User
 import com.app.backend.model.user.token.UserRefreshToken
-import org.springframework.data.jpa.repository.Modifying
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional
  *
  * This interface extends [BaseRepository] and provides methods for querying and manipulating user refresh tokens.
  *
- * @see BaseRepository
  * @property [UserRefreshToken] entity type representing a user refresh token.
+ * @author Vladislav Nasevich
+ * @see BaseRepository
  */
 @Repository
 interface UserRefreshTokenRepository: BaseRepository<UserRefreshToken> {
@@ -33,7 +33,7 @@ interface UserRefreshTokenRepository: BaseRepository<UserRefreshToken> {
      * @throws IllegalArgumentException if the token is not found.
      */
     fun findOneByToken(token: String): UserRefreshToken =
-        findByToken(token) ?: throw IllegalArgumentException("Wrong refresh token provided")
+        findByToken(token) ?: throw NoSuchElementException("Wrong refresh token provided")
 
     /**
      * Checks if a user refresh token with the specified token value exists.
@@ -57,6 +57,5 @@ interface UserRefreshTokenRepository: BaseRepository<UserRefreshToken> {
      * @param user [User] entity.
      */
     @Transactional
-    @Modifying
     fun deleteByUser(user: User)
 }

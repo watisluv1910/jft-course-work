@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import CheckButton from 'react-validation/build/button';
@@ -7,8 +7,8 @@ import {
     validateEmail,
     validatePassword,
     validateUsername,
-} from '../utils/validation';
-import {required} from '../utils/required';
+} from './utils/validation';
+import {required} from './utils/required';
 
 /**
  * A component that provides a registration form for users to create an account.
@@ -17,7 +17,6 @@ import {required} from '../utils/required';
  * via the AuthService and provides feedback to the user.
  *
  * @component
- * @param {Object} props - Component props.
  * @return {React.Element} The rendered Register component.
  * @example
  * <Register />
@@ -127,7 +126,8 @@ export const Register = () => {
                             <div className="form-group">
                                 <button
                                     className="btn btn-primary btn-block"
-                                >Sign Up</button>
+                                >Sign Up
+                                </button>
                             </div>
                         </div>
                     )}
@@ -146,7 +146,7 @@ export const Register = () => {
                             </div>
                         </div>
                     )}
-                    <CheckButton style={{display: 'none'}} ref={checkBtn} />
+                    <CheckButton style={{display: 'none'}} ref={checkBtn}/>
                 </Form>
             </div>
         </div>

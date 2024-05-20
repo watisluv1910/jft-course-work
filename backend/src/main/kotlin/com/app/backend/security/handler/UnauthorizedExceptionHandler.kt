@@ -22,8 +22,8 @@ import java.util.*
  * when an authentication is required but isn't present.
  */
 @Component
-class UnauthorizedHandler(
-    val logger: Logger = LoggerFactory.getLogger(UnauthorizedHandler::class.java)
+class UnauthorizedExceptionHandler(
+    val logger: Logger = LoggerFactory.getLogger(UnauthorizedExceptionHandler::class.java)
 ) : AuthenticationEntryPoint {
 
     /**
