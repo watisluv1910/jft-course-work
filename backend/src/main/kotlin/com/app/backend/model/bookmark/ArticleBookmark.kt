@@ -15,10 +15,10 @@ class ArticleBookmark {
     var id: Long? = null
 
     @field:Column(name = "article_url", nullable = false)
-    var articleUrl: String? = null
+    var articleUrl: String = ""
 
     @field:Column(name = "article_title", nullable = false)
-    var articleTitle: String? = null
+    var articleTitle: String = ""
 
     @field:Column(name = "creation_date", nullable = false)
     var creationDate: Timestamp? = null

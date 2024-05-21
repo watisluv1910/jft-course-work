@@ -19,13 +19,13 @@ class User {
     var id: Long? = null
 
     @field:Column(name = "username", nullable = false)
-    var username: String? = null
+    var username: String = ""
 
     @field:Column(name = "password", nullable = false)
-    var password: String? = null
+    var password: String = ""
 
     @field:Column(name = "user_email", nullable = false)
-    var userEmail: String? = null
+    var userEmail: String = ""
 
     @field:Column(name = "creation_date", nullable = false)
     var creationDate: Timestamp = Timestamp(Date().time)
