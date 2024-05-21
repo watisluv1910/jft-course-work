@@ -13,12 +13,7 @@ import {Bookmark} from '../Bookmark';
 export const BookmarksContainer = () => {
     const {bookmarks} = useBookmarksContext();
     return (
-        <div style={
-            {
-                paddingBlock: 20,
-                margin: 'auto',
-            }
-        }>
+        <div className={"container d-grid p-0"}>
             {bookmarks.reverse().map((bookmark) => (
                 <Bookmark
                     key={bookmark.id}

@@ -66,12 +66,14 @@ export const BookmarkButton = ({story}) => {
     };
 
     return (
-        <button onClick={handleBookmarkClick}
-                style={{border: 'none', background: 'none'}}>
+        <button
+            className={"border-0 bg-transparent"}
+            onClick={handleBookmarkClick}
+        >
             <img
                 src={getBookmarkIcon()}
                 alt="Bookmark"
-                style={{width: '24px', aspectRatio: '1 / 1'}}
+                style={{width: 24, maxWidth: 24, aspectRatio: '1 / 1'}}
             />
         </button>
     );
