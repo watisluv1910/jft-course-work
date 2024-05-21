@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.sql.Timestamp
+import java.util.*
 
 @ExtendWith(MockKExtension::class)
 @MockKExtension.ConfirmVerification
@@ -31,7 +32,7 @@ class ArticleBookmarkServiceTest {
         val testBookmark = ArticleBookmark().apply {
             articleUrl = "https://example.com/article"
             articleTitle = "Example article"
-            creationDate = Timestamp(System.currentTimeMillis())
+            creationDate = Timestamp(Date().time)
             user = testUser
         }
 
@@ -70,7 +71,7 @@ class ArticleBookmarkServiceTest {
         val testBookmark = ArticleBookmark().apply {
             articleTitle = "Example article"
             articleUrl = "https://example.com/article"
-            creationDate = Timestamp(System.currentTimeMillis())
+            creationDate = Timestamp(Date().time)
             user = testUser
         }
 

@@ -103,7 +103,7 @@ class AuthenticationService(
             tokenUtils.generateAccessTokenCookie(foundUser).toString(),
             tokenUtils.generateRefreshTokenCookie(userDetails, foundUser)
                 .toString(),
-            System.currentTimeMillis() + tokenUtils.refreshTokenExpirationMs.toLong(),
+            Date().time + tokenUtils.refreshTokenExpirationMs.toLong(),
             UserInfoResponse.build(foundUser)
         )
     }
@@ -128,7 +128,7 @@ class AuthenticationService(
                     foundUser
                 ).toString(),
                 accessTokenExpiresAt = Date(
-                    System.currentTimeMillis() + tokenUtils.accessTokenExpirationMs.toLong()
+                    Date().time + tokenUtils.accessTokenExpirationMs.toLong()
                 ),
                 message = MessageResponse("Access token updated successfully")
             )

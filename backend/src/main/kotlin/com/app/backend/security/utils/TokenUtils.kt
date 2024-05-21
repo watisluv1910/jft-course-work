@@ -4,11 +4,7 @@ import com.app.backend.model.user.User
 import com.app.backend.model.user.UserDetailsImpl
 import com.app.backend.model.user.token.UserRefreshToken
 import com.app.backend.repo.UserRefreshTokenRepository
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.UnsupportedJwtException
+import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
@@ -23,7 +19,7 @@ import java.math.BigInteger
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import java.util.*
 import javax.crypto.SecretKey
 
 /**
@@ -84,7 +80,10 @@ class TokenUtils(
      * @param user user associated with the refresh token.
      * @return [ResponseCookie] containing the JWT refresh token.
      */
-    fun generateRefreshTokenCookie(userDetails: UserDetailsImpl, user: User): ResponseCookie {
+    fun generateRefreshTokenCookie(
+        userDetails: UserDetailsImpl,
+        user: User
+    ): ResponseCookie {
         return generateCookie(
             jwtRefreshCookieName,
             updateRefreshToken(userDetails, user).token,
@@ -92,7 +91,11 @@ class TokenUtils(
         )
     }
 
-    private fun generateCookie(name: String, value: String, path: String): ResponseCookie {
+    private fun generateCookie(
+        name: String,
+        value: String,
+        path: String
+    ): ResponseCookie {
         return ResponseCookie
             .from(name, value)
             .path(path)
@@ -109,7 +112,10 @@ class TokenUtils(
      * @param name name of the cookie to retrieve.
      * @return value of the cookie if found, otherwise null.
      */
-    private fun getValueFromCookies(request: HttpServletRequest, name: String): String? {
+    private fun getValueFromCookies(
+        request: HttpServletRequest,
+        name: String
+    ): String? {
         val cookie = WebUtils.getCookie(request, name)
         return cookie?.value
     }
@@ -143,7 +149,10 @@ class TokenUtils(
      * @param claimsResolver resolver function to extract a specific claim from the token.
      * @return resolved claim.
      */
-    private fun <T> extractClaim(token: String?, claimsResolver: (Claims?) -> T): T {
+    private fun <T> extractClaim(
+        token: String?,
+        claimsResolver: (Claims?) -> T
+    ): T {
         val claims = extractAllClaims(token!!)
         return claimsResolver(claims)
     }
@@ -186,12 +195,12 @@ class TokenUtils(
         .subject(userDetails.username)
         .issuedAt(Date())
         .expiration(
-                Date.from(
-                    LocalDateTime
-                        .now()
-                        .plusSeconds(expirationTimeMs.toLong() / 1000)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()
+            Date.from(
+                LocalDateTime
+                    .now()
+                    .plusSeconds(expirationTimeMs.toLong() / 1000)
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant()
             )
         )
         .signWith(getSecretKey(), Jwts.SIG.HS256)
@@ -234,18 +243,19 @@ class TokenUtils(
         return refreshTokenRepository.findByUser(user)?.let {
             refreshTokenRepository.save(
                 it.apply {
-                    this.token = generateRefreshToken(userDetails)
-                    this.expirationDate = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
+                    token = generateRefreshToken(userDetails)
+                    expirationDate =
+                        Timestamp(Date().time + refreshTokenExpirationMs.toLong())
                 }
             )
         } ?: refreshTokenRepository.save(
-                UserRefreshToken().apply {
-                    this.token = generateRefreshToken(userDetails)
-                    this.user = user
-                    this.expirationDate = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
-                }
-            )
-
+            UserRefreshToken().apply {
+                token = generateRefreshToken(userDetails)
+                this.user = user
+                expirationDate =
+                    Timestamp(Date().time + refreshTokenExpirationMs.toLong())
+            }
+        )
     }
 
     /**

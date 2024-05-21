@@ -10,7 +10,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
-import java.util.NoSuchElementException
+import java.util.*
 
 /**
  * Service for managing bookmarks of users.
@@ -42,7 +42,7 @@ class ArticleBookmarkService(
                 this.user = user
                 this.articleUrl = request.articleUrl
                 this.articleTitle = request.articleTitle
-                this.creationDate = Timestamp(System.currentTimeMillis())
+                this.creationDate = Timestamp(Date().time)
             }
         )
     }

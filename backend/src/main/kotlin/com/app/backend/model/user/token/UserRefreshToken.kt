@@ -17,7 +17,7 @@ class UserRefreshToken {
     var token: String = ""
 
     @field:Column(name = "expiration_date", nullable = false)
-    var expirationDate: Timestamp? = null
+    lateinit var expirationDate: Timestamp
 
     @field:OneToOne(fetch = FetchType.LAZY)
     @field:JoinColumn(name = "user_id", referencedColumnName = "id")

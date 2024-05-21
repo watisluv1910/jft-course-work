@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import java.sql.Timestamp
+import java.util.*
 
 @Entity
 @Table(name = "sr_user", schema = "tsr_database")
@@ -27,7 +28,7 @@ class User {
     var userEmail: String? = null
 
     @field:Column(name = "creation_date", nullable = false)
-    var creationDate: Timestamp? = null
+    var creationDate: Timestamp = Timestamp(Date().time)
 
     @field:ManyToMany(
         fetch = FetchType.EAGER,
