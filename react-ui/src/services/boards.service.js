@@ -1,23 +1,25 @@
 import api from '../config/api';
 
-const getUserBoard = () => {
-    return api.get('/test/user');
+const boardUrl = `/boards/`;
+
+const getAuthorBoard = () => {
+    return api.get(boardUrl + 'author');
 };
 
 const getModeratorBoard = () => {
-    return api.get('/test/moderator');
+    return api.get(boardUrl + 'moderator');
 };
 
 const getAdminBoard = () => {
-    return api.get('/test/admin');
+    return api.get(boardUrl + 'admin');
 };
 
 const deleteUser = (userId) => {
-    return api.delete(`/test/moderator/deleteUser/${userId}`);
+    return api.delete(boardUrl + `moderator/deleteUser/${userId}`);
 };
 
 export const BoardsService = {
-    getUserBoard,
+    getAuthorBoard,
     getModeratorBoard,
     getAdminBoard,
     deleteUser

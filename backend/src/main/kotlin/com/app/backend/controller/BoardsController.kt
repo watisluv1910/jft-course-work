@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*
  * @author Vladislav Nasevich
  */
 @RestController
-@RequestMapping("/api/test")
-class TestController(
+@RequestMapping("/api/board")
+class BoardsController(
     val userRepository: UserRepository
 ) {
 
@@ -25,10 +25,10 @@ class TestController(
      *
      * @return [ResponseEntity] with "User content" message.
      */
-    @GetMapping("/user")
+    @GetMapping("/author")
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     fun userAccess(): ResponseEntity<String> {
-        return ResponseEntity.ok("User content")
+        return ResponseEntity.ok("Author content")
     }
 
     /**

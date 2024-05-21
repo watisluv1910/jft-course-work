@@ -10,7 +10,7 @@ import {Register} from './components/Register';
 import {Login} from './components/Login';
 import {GlobalStyle} from './assets/styles/ResetStyles';
 import {BoardModerator} from './components/boards/BoardModerator';
-import {BoardUser} from './components/boards/BoardUser';
+import {BoardAuthor} from './components/boards/BoardAuthor';
 import {BoardAdmin} from './components/boards/BoardAdmin';
 import {BookmarkService} from './services/bookmark.service';
 import {BookmarksContext} from './contexts/useBookmarksContext';
@@ -155,7 +155,7 @@ export const App = () => {
                                 exact path="/profile"
                                 element={<Profile/>}/>
                             <Route exact path="/test/user"
-                                   element={<BoardUser/>}/>
+                                   element={<BoardAuthor/>}/>
                             <Route exact path="/test/moderator"
                                    element={<BoardModerator/>}/>
                             <Route exact path="/test/admin"

@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 
 import {BoardsService} from '../../services/boards.service';
 
-export const BoardUser = () => {
+export const BoardAuthor = () => {
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        BoardsService.getUserBoard().then(
+        BoardsService.getAuthorBoard().then(
             (response) => {
                 setContent(response.data);
             },
