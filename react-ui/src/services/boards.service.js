@@ -1,6 +1,6 @@
 import api from '../config/api';
 
-const boardUrl = `/boards/`;
+const boardUrl = `/board/`;
 
 const getAuthorBoard = () => {
     return api.get(boardUrl + 'author');
