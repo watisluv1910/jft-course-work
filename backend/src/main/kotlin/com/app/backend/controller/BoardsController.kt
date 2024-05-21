@@ -1,8 +1,7 @@
 package com.app.backend.controller
 
 import com.app.backend.payload.user.response.UserInfoResponse
-import com.app.backend.repo.UserRepository
-import org.springframework.http.HttpStatus
+import com.app.backend.service.BoardsService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/board")
 class BoardsController(
-    val userRepository: UserRepository
+    val boardsService: BoardsService
 ) {
 
     /**
@@ -39,26 +38,18 @@ class BoardsController(
     @GetMapping("/moderator")
     @PreAuthorize("hasRole('MODERATOR')")
     fun moderatorAccess(): ResponseEntity<List<UserInfoResponse>> =
-        ResponseEntity(
-            userRepository.findAll().map { UserInfoResponse.build(it) },
-            HttpStatus.OK
-        )
+        ResponseEntity
+            .ok()
+            .body(boardsService.users())
 
     @DeleteMapping("/moderator/deleteUser/{id}")
     @PreAuthorize("hasRole('MODERATOR')")
     fun deleteUser(@PathVariable id: Long, authentication: Authentication): ResponseEntity<Any> {
-        val currentUser = userRepository
-            .findByUsername(authentication.principal.toString())
-            ?: return ResponseEntity.notFound().build()
-        val userToDelete = userRepository
-            .findById(id)
-            .orElse(null) ?: return ResponseEntity.notFound().build()
-
-        if (!currentUser.username.equals(userToDelete.username)) {
-            userRepository.delete(userToDelete)
+        try {
+            boardsService.deleteUserById(id, authentication)
             return ResponseEntity.ok().build()
-        } else {
-            return ResponseEntity.badRequest().body("Moderator cannot delete themselves.")
+        } catch (ex: RuntimeException) {
+            return ResponseEntity.badRequest().body(ex.message)
         }
     }
 
