@@ -33,7 +33,7 @@ export const StoriesContainer = () => {
     return (
         <>
             <StoriesContainerWrapper data-test-id="stories-container">
-                {storiesIds.slice(0, count).map((storyId) => (
+                {storiesIds && storiesIds.slice(0, count).map((storyId) => (
                     <Story
                         key={storyId}
                         storyId={storyId}

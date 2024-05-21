@@ -37,20 +37,8 @@ class BoardsController(
      */
     @GetMapping("/moderator")
     @PreAuthorize("hasRole('MODERATOR')")
-    fun moderatorAccess(): ResponseEntity<List<UserInfoResponse>> =
-        ResponseEntity
-            .ok()
-            .body(boardsService.users())
-
-    @DeleteMapping("/moderator/deleteUser/{id}")
-    @PreAuthorize("hasRole('MODERATOR')")
-    fun deleteUser(@PathVariable id: Long, authentication: Authentication): ResponseEntity<Any> {
-        try {
-            boardsService.deleteUserById(id, authentication)
-            return ResponseEntity.ok().build()
-        } catch (ex: RuntimeException) {
-            return ResponseEntity.badRequest().body(ex.message)
-        }
+    fun moderatorAccess(): ResponseEntity<String> {
+        return ResponseEntity.ok("Moderator content")
     }
 
     /**
@@ -60,7 +48,19 @@ class BoardsController(
      */
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    fun adminAccess(): ResponseEntity<String> {
-        return ResponseEntity.ok("Admin content")
+    fun adminAccess(): ResponseEntity<List<UserInfoResponse>> =
+        ResponseEntity
+            .ok()
+            .body(boardsService.users())
+
+    @DeleteMapping("/admin/deleteUser/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun deleteUser(@PathVariable id: Long, authentication: Authentication): ResponseEntity<Any> {
+        try {
+            boardsService.deleteUserById(id, authentication)
+            return ResponseEntity.ok().build()
+        } catch (ex: RuntimeException) {
+            return ResponseEntity.badRequest().body(ex.message)
+        }
     }
 }

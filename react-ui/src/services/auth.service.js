@@ -31,7 +31,7 @@ const authUrl = `/auth/`;
  */
 const register = function (username, userEmail, password) {
     return api.post(authUrl + 'register', {
-        username, userEmail, password, roles: ['ROLE_USER', 'ROLE_MODERATOR'],
+        username, userEmail, password, roles: ['ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN'],
     }).catch((e) => console.error(e.message));
 };
 

@@ -15,7 +15,7 @@ const getAdminBoard = () => {
 };
 
 const deleteUser = (userId) => {
-    return api.delete(boardUrl + `moderator/deleteUser/${userId}`);
+    return api.delete(boardUrl + `admin/deleteUser/${userId}`);
 };
 
 export const BoardsService = {

@@ -139,7 +139,7 @@ export const App = () => {
                     </nav>
 
 
-                    <div className="container mt-3">
+                    <div className={"mt-4"}>
                         <Routes>
                             <Route
                                 exact path={'/'}
