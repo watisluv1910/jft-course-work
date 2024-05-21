@@ -1,6 +1,8 @@
 package com.app.backend.model.user
 
+import com.app.backend.model.Blog
 import com.app.backend.model.bookmark.ArticleBookmark
+import com.app.backend.model.post.PostLike
 import com.app.backend.model.user.role.UserRole
 import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -55,6 +57,30 @@ class User {
     )
     @field:JsonManagedReference
     var bookmarks: MutableSet<ArticleBookmark> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "author",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    var blogs: MutableSet<Blog> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "lastEditor",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    var lastEditedBlogs: MutableSet<Blog> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "user",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    var likes: MutableSet<PostLike> = mutableSetOf()
 
     @field:OneToOne(
         mappedBy = "user",
