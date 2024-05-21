@@ -97,7 +97,7 @@ class AuthenticationService(
         SecurityContextHolder.getContext().authentication = authentication
 
         val userDetails =
-            userDetailsService.loadUserByUsername(foundUser.username!!) as UserDetailsImpl
+            userDetailsService.loadUserByUsername(foundUser.username) as UserDetailsImpl
 
         return LoginInternalResponse(
             tokenUtils.generateAccessTokenCookie(foundUser).toString(),

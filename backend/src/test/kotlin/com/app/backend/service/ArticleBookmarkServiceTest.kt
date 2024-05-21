@@ -86,7 +86,7 @@ class ArticleBookmarkServiceTest {
         }
 
         // When
-        val createdBookmark = mockArticleBookmarkService.createBookmark(request, testUser.username!!)
+        val createdBookmark = mockArticleBookmarkService.createBookmark(request, testUser.username)
 
         // Then
         verify(exactly = 1) { mockUserRepository.findOneByUsername(any()) }
