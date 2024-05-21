@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @PreAuthorize("hasRole('USER')")
 @RequestMapping("/api/user/bookmarks")
-class BookmarkController(
+class ArticleBookmarkController(
     val articleBookmarkService: ArticleBookmarkService
 ) {
 
