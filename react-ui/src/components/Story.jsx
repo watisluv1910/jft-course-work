@@ -8,7 +8,7 @@ import {
     StoryWrapper,
 } from '../assets/styles/StoryStyles';
 import {mapTime} from '../mappers/mapTime';
-import {BookmarkButton} from './BookmarkButton';
+import {ArticleBookmarkButton} from './bookmark/ArticleBookmarkButton';
 import {AuthService} from '../services/auth.service';
 
 /**
@@ -38,7 +38,7 @@ export const Story = memo(function Story({storyId}) {
             <StoryTitle>
                 <a href={story.url}>{story.title}</a>
                 {AuthService.getCurrentUser() &&
-                    <BookmarkButton story={story}/>
+                    <ArticleBookmarkButton story={story}/>
                 }
             </StoryTitle>
             <StoryMeta>

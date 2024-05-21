@@ -5,8 +5,8 @@ import {
     StoryMetaElement,
     StoryTitle,
     StoryWrapper,
-} from '../assets/styles/StoryStyles';
-import {BookmarkButton} from './BookmarkButton';
+} from '../../assets/styles/StoryStyles';
+import {ArticleBookmarkButton} from './ArticleBookmarkButton';
 
 /**
  * A component that displays a bookmarked story.
@@ -22,32 +22,34 @@ import {BookmarkButton} from './BookmarkButton';
  *
  * @author Vladislav Nasevich
  */
-export const Bookmark = ({bookmark}) => {
+export const ArticleBookmark = ({bookmark}) => {
     return (
         <StoryWrapper data-testid="story">
             <StoryTitle>
                 <a href={bookmark.articleUrl}>{bookmark.articleTitle}</a>
-                <BookmarkButton story={Object.create({
+                <ArticleBookmarkButton story={Object.create({
                     title: bookmark.articleTitle,
                     url: bookmark.articleUrl,
                 })}/>
             </StoryTitle>
 
             <StoryMeta>
-                <span data-test-id="story-time" className="story-time">
-                    <StoryMetaElement
-                        color="#000"
-                        className="story-meta-element"
-                    >
-                        Added at:{' '}
-                    </StoryMetaElement>
-                    {new Date(bookmark.timestamp).toLocaleString()}
-                </span>
+                {bookmark.creationDate &&
+                    <span data-test-id="story-time" className="story-time">
+                        <StoryMetaElement
+                            color="#000"
+                            className="story-meta-element"
+                        >
+                            Added at:{' '}
+                        </StoryMetaElement>
+                        {new Date(bookmark.creationDate).toLocaleString()}
+                    </span>
+                }
             </StoryMeta>
         </StoryWrapper>
     );
 };
 
-Bookmark.propTypes = {
+ArticleBookmark.propTypes = {
     bookmark: PropTypes.object.isRequired,
 };

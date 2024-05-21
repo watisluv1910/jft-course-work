@@ -7,7 +7,7 @@ import java.sql.Timestamp
 
 @Entity
 @Table(name = "sr_article_bookmark", schema = "tsr_database")
-class UserBookmark {
+class ArticleBookmark {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     @field:Id

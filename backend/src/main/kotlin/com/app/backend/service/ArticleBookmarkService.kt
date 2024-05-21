@@ -1,10 +1,10 @@
 package com.app.backend.service
 
-import com.app.backend.model.bookmark.UserBookmark
+import com.app.backend.model.bookmark.ArticleBookmark
 import com.app.backend.model.user.User
 import com.app.backend.payload.MessageResponse
-import com.app.backend.payload.bookmark.request.CreateBookmarkRequest
-import com.app.backend.repo.UserBookmarkRepository
+import com.app.backend.payload.bookmark.request.CreateArticleBookmarkRequest
+import com.app.backend.repo.ArticleBookmarkRepository
 import com.app.backend.repo.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,27 +18,27 @@ import java.util.NoSuchElementException
  * Provides methods to add, delete, and retrieve bookmarks for a specific user.
  *
  * @property userRepository The repository for managing user entities.
- * @property userBookmarkRepository The repository for managing user bookmarks.
+ * @property articleBookmarkRepository The repository for managing user bookmarks.
  */
 @Service
-class UserBookmarkService(
+class ArticleBookmarkService(
     private val userRepository: UserRepository,
-    private val userBookmarkRepository: UserBookmarkRepository
+    private val articleBookmarkRepository: ArticleBookmarkRepository
 ) {
 
     /**
      * Creates a new bookmark for the specified user.
      *
-     * @param request [CreateBookmarkRequest] containing details of the article to be bookmarked.
+     * @param request [CreateArticleBookmarkRequest] containing details of the article to be bookmarked.
      * @param user [User] for whom the bookmark is to be created.
-     * @return [UserBookmark] object representing the newly created bookmark.
+     * @return [ArticleBookmark] object representing the newly created bookmark.
      */
     fun createBookmark(
-        request: CreateBookmarkRequest,
+        request: CreateArticleBookmarkRequest,
         user: User
-    ): UserBookmark {
-        return userBookmarkRepository.save(
-            UserBookmark().apply {
+    ): ArticleBookmark {
+        return articleBookmarkRepository.save(
+            ArticleBookmark().apply {
                 this.user = user
                 this.articleUrl = request.articleUrl
                 this.articleTitle = request.articleTitle
@@ -50,14 +50,14 @@ class UserBookmarkService(
     /**
      * Creates a new bookmark for the user with the specified username.
      *
-     * @param request [CreateBookmarkRequest] containing details of the article to be bookmarked.
+     * @param request [CreateArticleBookmarkRequest] containing details of the article to be bookmarked.
      * @param username username of the user for whom the bookmark is to be created.
-     * @return [UserBookmark] object representing the newly created bookmark.
+     * @return [ArticleBookmark] object representing the newly created bookmark.
      */
     fun createBookmark(
-        request: CreateBookmarkRequest,
+        request: CreateArticleBookmarkRequest,
         username: String
-    ): UserBookmark {
+    ): ArticleBookmark {
         val user = userRepository.findOneByUsername(username)
         return createBookmark(request, user)
     }
@@ -74,12 +74,12 @@ class UserBookmarkService(
     @Transactional
     fun deleteById(bookmarkId: Long, user: User): MessageResponse {
         val bookmark =
-            userBookmarkRepository.findByIdOrNull(bookmarkId)
+            articleBookmarkRepository.findByIdOrNull(bookmarkId)
                 ?: throw NoSuchElementException("Error: User bookmark not found")
         if (bookmark.user != user) {
             throw RuntimeException("Error: User is not authorized to remove this bookmark")
         }
-        userBookmarkRepository.deleteById(bookmarkId)
+        articleBookmarkRepository.deleteById(bookmarkId)
         return MessageResponse(
             "Bookmark with id $bookmarkId deleted successfully."
         )
@@ -113,38 +113,38 @@ class UserBookmarkService(
         return deleteById(bookmarkId, user)
     }
 
-    fun findAll(): List<UserBookmark> = userBookmarkRepository.findAll()
+    fun findAll(): List<ArticleBookmark> = articleBookmarkRepository.findAll()
 
     /**
      * Retrieves all bookmarks for a specified user.
      *
      * @param user user for whom the bookmarks are to be retrieved.
-     * @return list of [UserBookmark] objects representing all bookmarks of the user.
+     * @return list of [ArticleBookmark] objects representing all bookmarks of the user.
      */
-    fun findAllByUser(user: User): List<UserBookmark> =
-        userBookmarkRepository.findAllByUserId(user.id!!) ?: listOf()
+    fun findAllByUser(user: User): List<ArticleBookmark> =
+        articleBookmarkRepository.findAllByUserId(user.id!!) ?: listOf()
 
     /**
      * Retrieves all bookmarks for a user with the specified user ID.
      *
      * @param userId ID of the user for whom the bookmarks are to be retrieved.
-     * @return list of [UserBookmark] objects representing all bookmarks of the user.
+     * @return list of [ArticleBookmark] objects representing all bookmarks of the user.
      * @throws NoSuchElementException if the user is not found.
      */
     @Transactional
-    fun findAllByUserId(userId: Long): List<UserBookmark> {
+    fun findAllByUserId(userId: Long): List<ArticleBookmark> {
         userRepository.getExisted(userId)
-        return userBookmarkRepository.findAllByUserId(userId) ?: listOf()
+        return articleBookmarkRepository.findAllByUserId(userId) ?: listOf()
     }
 
     /**
      * Retrieves all bookmarks for a user with the specified username.
      *
      * @param username username of the user for whom the bookmarks are to be retrieved.
-     * @return list of [UserBookmark] objects representing all bookmarks of the user.
+     * @return list of [ArticleBookmark] objects representing all bookmarks of the user.
      */
     @Transactional
-    fun findAllByUsername(username: String): List<UserBookmark> {
+    fun findAllByUsername(username: String): List<ArticleBookmark> {
         val user = userRepository.findOneByUsername(username)
         return findAllByUser(user)
     }

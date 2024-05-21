@@ -1,9 +1,9 @@
 package com.app.backend.controller
 
-import com.app.backend.model.bookmark.UserBookmark
+import com.app.backend.model.bookmark.ArticleBookmark
 import com.app.backend.payload.MessageResponse
-import com.app.backend.payload.bookmark.request.CreateBookmarkRequest
-import com.app.backend.service.UserBookmarkService
+import com.app.backend.payload.bookmark.request.CreateArticleBookmarkRequest
+import com.app.backend.service.ArticleBookmarkService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -16,29 +16,29 @@ import org.springframework.web.bind.annotation.*
  * Provides endpoints for adding, deleting, and retrieving bookmarks for the authenticated user.
  * All endpoints are secured with the 'USER' role using [PreAuthorize].
  *
- * @property userBookmarkService The service for managing user bookmarks.
+ * @property articleBookmarkService The service for managing user bookmarks.
  * @author Vladislav Nasevich
  */
 @RestController
 @PreAuthorize("hasRole('USER')")
 @RequestMapping("/api/user/bookmarks")
 class BookmarkController(
-    val userBookmarkService: UserBookmarkService
+    val articleBookmarkService: ArticleBookmarkService
 ) {
 
     /**
      * Adds a new bookmark for the authenticated user.
      *
-     * @param request [CreateBookmarkRequest] containing details of the article to be bookmarked.
+     * @param request [CreateArticleBookmarkRequest] containing details of the article to be bookmarked.
      * @param username username of the authenticated user obtained from the [AuthenticationPrincipal].
-     * @return A [ResponseEntity] with the newly created [UserBookmark] and HTTP status code 201.
+     * @return A [ResponseEntity] with the newly created [ArticleBookmark] and HTTP status code 201.
      */
     @PostMapping("/add")
     fun addBookmark(
-        @RequestBody request: CreateBookmarkRequest,
+        @RequestBody request: CreateArticleBookmarkRequest,
         @AuthenticationPrincipal username: String
-    ) = ResponseEntity<UserBookmark>(
-        userBookmarkService.createBookmark(request, username),
+    ) = ResponseEntity<ArticleBookmark>(
+        articleBookmarkService.createBookmark(request, username),
         HttpStatus.CREATED
     )
 
@@ -54,7 +54,7 @@ class BookmarkController(
         @PathVariable bookmarkId: Long,
         @AuthenticationPrincipal username: String
     ) = ResponseEntity<MessageResponse>(
-        userBookmarkService.deleteById(bookmarkId, username),
+        articleBookmarkService.deleteById(bookmarkId, username),
         HttpStatus.NO_CONTENT
     )
 
@@ -62,13 +62,13 @@ class BookmarkController(
      * Retrieves all bookmarks for the authenticated user.
      *
      * @param username username of the authenticated user obtained from the [AuthenticationPrincipal].
-     * @return A [ResponseEntity] with a list of [UserBookmark] objects and HTTP status code 200.
+     * @return A [ResponseEntity] with a list of [ArticleBookmark] objects and HTTP status code 200.
      */
     @GetMapping
     fun getAllBookmarksForUser(
         @AuthenticationPrincipal username: String
-    ) = ResponseEntity<List<UserBookmark>>(
-        userBookmarkService.findAllByUsername(username),
+    ) = ResponseEntity<List<ArticleBookmark>>(
+        articleBookmarkService.findAllByUsername(username),
         HttpStatus.OK
     )
 }

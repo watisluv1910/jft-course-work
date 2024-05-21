@@ -12,8 +12,8 @@ import {GlobalStyle} from './assets/styles/ResetStyles';
 import {BoardModerator} from './components/boards/BoardModerator';
 import {BoardAuthor} from './components/boards/BoardAuthor';
 import {BoardAdmin} from './components/boards/BoardAdmin';
-import {BookmarkService} from './services/bookmark.service';
-import {BookmarksContext} from './contexts/useBookmarksContext';
+import {ArticleBookmarkService} from './services/articleBookmarkService';
+import {ArticleBookmarksContext} from './context/useBookmarksContext';
 import sunIcon from './assets/icons/sun_favicon_round.png';
 
 export const App = () => {
@@ -30,7 +30,7 @@ export const App = () => {
             setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
             setShowAdminBoard(user.roles.includes('ROLE_ADMIN'));
 
-            BookmarkService
+            ArticleBookmarkService
                 .getUserBookmarks()
                 .then((data) => setBookmarks(data));
         }
@@ -54,7 +54,7 @@ export const App = () => {
 
     return (
         <>
-            <BookmarksContext.Provider
+            <ArticleBookmarksContext.Provider
                 value={{bookmarks, setBookmarks}}>
                 <GlobalStyle/>
                 <div>
@@ -163,7 +163,7 @@ export const App = () => {
                         </Routes>
                     </div>
                 </div>
-            </BookmarksContext.Provider>
+            </ArticleBookmarksContext.Provider>
         </>
     );
 };

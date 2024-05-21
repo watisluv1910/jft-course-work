@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import bookmarkIconOutline from '../assets/icons/bookmark_icon_outline.png';
-import bookmarkIconFilled from '../assets/icons/bookmark_icon_filled.png';
-import {BookmarkService} from '../services/bookmark.service';
-import {useBookmarksContext} from '../contexts/useBookmarksContext';
+import bookmarkIconOutline from '../../assets/icons/bookmark_icon_outline.png';
+import bookmarkIconFilled from '../../assets/icons/bookmark_icon_filled.png';
+import {ArticleBookmarkService} from '../../services/articleBookmarkService';
+import {useBookmarksContext} from '../../context/useBookmarksContext';
 
 /**
- * The BookmarkButton component is used to bookmark a story.
+ * The ArticleBookmarkButton component is used to bookmark a story.
  * It uses the 'useBookmarksContext' hook to provide bookmark state management.
  * If the story is already bookmarked, it displays a filled bookmark icon,
  * otherwise an outline.
@@ -15,12 +15,12 @@ import {useBookmarksContext} from '../contexts/useBookmarksContext';
  * @component
  * @param {Object} props - Component props
  * @param {Object} props.story - Story object to be bookmarked
- * @return {React.Element} The rendered BookmarkButton component.
+ * @return {React.Element} The rendered ArticleBookmarkButton component.
  * @example
- * <BookmarkButton story={story} />
+ * <ArticleBookmarkButton story={story} />
  * @author Vladislav Nasevich
  */
-export const BookmarkButton = ({story}) => {
+export const ArticleBookmarkButton = ({story}) => {
     const {bookmarks, setBookmarks} = useBookmarksContext();
 
     const isBookmarked = () => bookmarks.some(
@@ -36,8 +36,8 @@ export const BookmarkButton = ({story}) => {
 
     const addBookmark = async (story) => {
         try {
-            await BookmarkService.addBookmark(story).then(async () => {
-                setBookmarks(await BookmarkService.getUserBookmarks());
+            await ArticleBookmarkService.addBookmark(story).then(async () => {
+                setBookmarks(await ArticleBookmarkService.getUserBookmarks());
             });
         } catch (error) {
             console.error('Error adding bookmark: ', error);
@@ -50,7 +50,7 @@ export const BookmarkButton = ({story}) => {
 
         for (const currentStoryBookmark of currentStoryBookmarks) {
             try {
-                await BookmarkService
+                await ArticleBookmarkService
                     .deleteBookmark(currentStoryBookmark.id)
                     .then(() => {
                         setBookmarks(
@@ -79,6 +79,6 @@ export const BookmarkButton = ({story}) => {
     );
 };
 
-BookmarkButton.propTypes = {
+ArticleBookmarkButton.propTypes = {
     story: PropTypes.object.isRequired,
 };

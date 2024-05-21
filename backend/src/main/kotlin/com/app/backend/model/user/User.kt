@@ -1,6 +1,6 @@
 package com.app.backend.model.user
 
-import com.app.backend.model.bookmark.UserBookmark
+import com.app.backend.model.bookmark.ArticleBookmark
 import com.app.backend.model.user.role.UserRole
 import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -53,7 +53,7 @@ class User {
         cascade = [CascadeType.REMOVE]
     )
     @field:JsonManagedReference
-    var bookmarks: MutableSet<UserBookmark> = mutableSetOf()
+    var bookmarks: MutableSet<ArticleBookmark> = mutableSetOf()
 
     @field:OneToOne(
         mappedBy = "user",

@@ -17,7 +17,7 @@ const getUserBookmarks = async () => {
     return api.get('/user/bookmarks').then(({data}) => data);
 };
 
-export const BookmarkService = {
+export const ArticleBookmarkService = {
     addBookmark,
     deleteBookmark,
     getUserBookmarks,
