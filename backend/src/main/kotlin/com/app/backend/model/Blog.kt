@@ -1,14 +1,12 @@
 package com.app.backend.model
 
-import ch.qos.logback.core.util.SystemInfo
-import com.app.backend.model.bookmark.ArticleBookmark
 import com.app.backend.model.post.Post
 import com.app.backend.model.user.User
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import java.sql.Timestamp
-import java.util.Date
+import java.util.*
 
 @Entity
 @Table(name = "sr_blog", schema = "tsr_database")

@@ -1,6 +1,5 @@
 package com.app.backend.model.post
 
-import com.app.backend.model.user.User
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 
