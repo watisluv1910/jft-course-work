@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "sn_user_role", schema = "jft_database")
+@Table(name = "sr_user_role", schema = "tsr_database")
 class UserRole {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,3 @@ class UserRole {
     @field:JsonIgnoreProperties("roles")
     var users: MutableSet<User> = mutableSetOf()
 }
-

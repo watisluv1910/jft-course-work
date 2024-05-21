@@ -6,9 +6,10 @@ import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
+import java.sql.Timestamp
 
 @Entity
-@Table(name = "sn_user", schema = "jft_database")
+@Table(name = "sr_user", schema = "tsr_database")
 class User {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +26,15 @@ class User {
     @field:Column(name = "user_email", nullable = false)
     var userEmail: String? = null
 
+    @field:Column(name = "creation_date", nullable = false)
+    var creationDate: Timestamp? = null
+
     @field:ManyToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH]
     )
     @field:JoinTable(
-        name = "sn_user_roles",
+        name = "sr_user_roles",
         joinColumns = [JoinColumn(
             name = "user_id",
             referencedColumnName = "id"

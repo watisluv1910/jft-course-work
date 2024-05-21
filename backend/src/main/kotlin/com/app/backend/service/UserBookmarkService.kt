@@ -42,7 +42,7 @@ class UserBookmarkService(
                 this.user = user
                 this.articleUrl = request.articleUrl
                 this.articleTitle = request.articleTitle
-                this.timestamp = Timestamp(System.currentTimeMillis())
+                this.creationDate = Timestamp(System.currentTimeMillis())
             }
         )
     }

@@ -220,7 +220,7 @@ class TokenUtils(
      * Updates the refresh token for the specified user details and user.
      *
      * If [UserRefreshToken] is present, updates [token][UserRefreshToken.token]
-     * and [dateExpiration][UserRefreshToken.dateExpiration] fields,
+     * and [dateExpiration][UserRefreshToken.expirationDate] fields,
      * otherwise saves new entity into [UserRefreshTokenRepository].
      *
      * @param userDetails user details for whom the refresh token is updated.
@@ -235,14 +235,14 @@ class TokenUtils(
             refreshTokenRepository.save(
                 it.apply {
                     this.token = generateRefreshToken(userDetails)
-                    this.dateExpiration = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
+                    this.expirationDate = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
                 }
             )
         } ?: refreshTokenRepository.save(
                 UserRefreshToken().apply {
                     this.token = generateRefreshToken(userDetails)
                     this.user = user
-                    this.dateExpiration = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
+                    this.expirationDate = Timestamp(System.currentTimeMillis() + refreshTokenExpirationMs.toLong())
                 }
             )
 

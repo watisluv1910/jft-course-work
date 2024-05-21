@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.sql.Timestamp
 
 @Entity
-@Table(name = "sn_user_bookmark", schema = "jft_database")
+@Table(name = "sr_article_bookmark", schema = "tsr_database")
 class UserBookmark {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,8 @@ class UserBookmark {
     @field:Column(name = "article_title", nullable = false)
     var articleTitle: String? = null
 
-    @field:Column(name = "timestamp", nullable = false)
-    var timestamp: Timestamp? = null
+    @field:Column(name = "creation_date", nullable = false)
+    var creationDate: Timestamp? = null
 
     @field:JsonBackReference
     @field:ManyToOne(fetch = FetchType.LAZY)

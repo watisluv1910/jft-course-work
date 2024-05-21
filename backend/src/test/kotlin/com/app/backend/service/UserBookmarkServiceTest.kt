@@ -31,7 +31,7 @@ class UserBookmarkServiceTest {
         val testBookmark = UserBookmark().apply {
             articleUrl = "https://example.com/article"
             articleTitle = "Example article"
-            timestamp = Timestamp(System.currentTimeMillis())
+            creationDate = Timestamp(System.currentTimeMillis())
             user = testUser
         }
 
@@ -70,7 +70,7 @@ class UserBookmarkServiceTest {
         val testBookmark = UserBookmark().apply {
             articleTitle = "Example article"
             articleUrl = "https://example.com/article"
-            timestamp = Timestamp(System.currentTimeMillis())
+            creationDate = Timestamp(System.currentTimeMillis())
             user = testUser
         }
 
@@ -80,7 +80,7 @@ class UserBookmarkServiceTest {
             id = bookmarkId
             articleTitle = testBookmark.articleTitle
             articleUrl = testBookmark.articleUrl
-            timestamp = testBookmark.timestamp
+            creationDate = testBookmark.creationDate
             user = testBookmark.user
         }
 

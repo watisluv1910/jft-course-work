@@ -1,6 +1,8 @@
 package com.app.backend.payload.user.request
 
 import com.app.backend.model.user.User
+import java.sql.Timestamp
+import java.time.LocalDateTime
 
 data class RegisterRequest(
     val username: String,
@@ -14,6 +16,7 @@ data class RegisterRequest(
                 user.username = username
                 user.userEmail = userEmail
                 user.password = password
+                user.creationDate = Timestamp.valueOf(LocalDateTime.now())
             },
             roles
         )
