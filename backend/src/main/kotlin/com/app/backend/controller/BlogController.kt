@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/blog")
 class BlogController(
-    val blogService: BlogService
+    private val blogService: BlogService
 ) {
 
     @PostMapping("/add")
@@ -37,11 +37,14 @@ class BlogController(
 
     @GetMapping
     fun getBlogsByTitle(
-        @RequestParam(name = "q") query: String?
+        @RequestParam(name = "title") title: String?
     ): ResponseEntity<*> {
         return try {
             ResponseEntity<List<BlogInfoBriefResponse>>(
-                query?.let { blogService.findAllByTitle(query) } ?: blogService.findAll(),
+                if (title.isNullOrBlank())
+                    blogService.findAll()
+                else
+                    blogService.findAllByTitle(title),
                 HttpStatus.OK
             )
         } catch (ex: Exception) {
@@ -86,7 +89,7 @@ class BlogController(
     ): ResponseEntity<String> {
         return try {
             blogService.deleteBlog(blogId, username)
-            ResponseEntity.ok().build()
+            ResponseEntity.noContent().build()
         } catch (ex: Exception) {
             ResponseEntity<String>(ex.message, HttpStatus.BAD_REQUEST)
         }

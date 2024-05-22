@@ -3,6 +3,7 @@ package com.app.backend.model.user
 import com.app.backend.model.Blog
 import com.app.backend.model.bookmark.ArticleBookmark
 import com.app.backend.model.post.PostLike
+import com.app.backend.model.post.PostMeta
 import com.app.backend.model.user.role.UserRole
 import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -72,7 +73,17 @@ class User {
         cascade = [CascadeType.REMOVE]
     )
     @field:JsonManagedReference
+    @field:JsonIgnoreProperties
     var lastEditedBlogs: MutableSet<Blog> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "lastEditor",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    @field:JsonIgnoreProperties
+    var lastEditedPosts: MutableSet<PostMeta> = mutableSetOf()
 
     @field:OneToMany(
         mappedBy = "user",

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PostRepository: BaseRepository<Post> {
 
-    fun findAllByBlog(blog: Blog): MutableList<Post>?
+    fun findAllByBlog(blog: Blog): MutableList<Post>
 
-    fun findAllByPostTitleIsContainingIgnoreCase(postTitle: String): MutableList<Post>?
+    fun findAllByPostTitleIsContainingIgnoreCase(postTitle: String): MutableList<Post>
 
-    fun findAllByCategoriesIsContaining(categories: MutableSet<PostCategory>): MutableList<Post>?
+    fun findAllByCategoriesIsContaining(categories: List<PostCategory>): MutableList<Post>
 }

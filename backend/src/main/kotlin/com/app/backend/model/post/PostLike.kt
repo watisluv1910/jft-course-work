@@ -4,6 +4,7 @@ import com.app.backend.model.user.User
 import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.sql.Timestamp
+import java.util.*
 
 /**
  * @author Vladislav Nasevich
@@ -18,15 +19,15 @@ class PostLike {
     var id: Long? = null
 
     @field:Column(name = "creation_date", nullable = false)
-    var creationDate: Timestamp? = null
+    var creationDate: Timestamp = Timestamp(Date().time)
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User? = null
+    lateinit var user: User
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    val post: Post? = null
+    lateinit var post: Post
 }

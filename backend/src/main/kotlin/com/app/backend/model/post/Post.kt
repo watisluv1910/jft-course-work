@@ -20,6 +20,7 @@ class Post {
     @field:Column(name = "id", nullable = false)
     var id: Long? = null
 
+    @field:Enumerated(EnumType.STRING)
     @field:Column(name = "post_status", nullable = false)
     var postStatus: EPostStatus = EPostStatus.POST_STATUS_SUBMITTED
 
@@ -29,16 +30,13 @@ class Post {
     @field:Column(name = "post_description", nullable = false)
     var postDescription: String = ""
 
-    @field:Column(name = "post_like_count", nullable = false)
-    var postLikeCount: Long = 0
-
     @field:Column(name = "creation_date", nullable = false)
     var creationDate: Timestamp = Timestamp(Date().time)
 
     @field:OneToOne(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.ALL],
-        optional = false
+        mappedBy = "post"
     )
     @field:PrimaryKeyJoinColumn
     lateinit var postMeta: PostMeta

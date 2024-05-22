@@ -1,7 +1,10 @@
 package com.app.backend.model.post
 
+import com.app.backend.model.user.User
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.sql.Timestamp
+import java.util.*
 
 /**
  * @author Vladislav Nasevich
@@ -17,16 +20,16 @@ class PostMeta {
     @field:Column(name = "post_body", nullable = false)
     var postBody: String = ""
 
-    @field:Column(name = "deletion_date", nullable = false)
-    var deletionDate: Timestamp? = null
-
     @field:Column(name = "last_edit_date", nullable = false)
-    var lastEditDate: Timestamp? = null
+    var lastEditDate: Timestamp = Timestamp(Date().time)
 
-    @field:Column(name = "last_editor_id", nullable = false)
-    var lastEditorId: Long? = null
+    @field:JsonBackReference
+    @field:ManyToOne(fetch = FetchType.LAZY)
+    @field:JoinColumn(name = "last_editor_id", nullable = false)
+    lateinit var lastEditor: User
 
     @field:MapsId
-    @field:OneToOne(mappedBy = "postMeta")
+    @field:OneToOne
+    @JoinColumn(name = "post_id")
     lateinit var post: Post
 }

@@ -54,16 +54,14 @@ class BlogService(
     }
 
     fun findAll(): List<BlogInfoBriefResponse> {
-        return blogRepository.findAll().map { it.toBlogInfoBriefResponse() }
+        return blogRepository
+            .findAll()
+            .sortedByDescending { it.creationDate }
+            .map { it.toBlogInfoBriefResponse() }
     }
 
     fun findById(id: Long): BlogInfoResponse {
-        return blogRepository.findByIdOrNull(id)
-            ?.toBlogInfoResponse()
-            ?: throw NoSuchElementException(
-                "Blog with id: $id not found. " +
-                        "It may be deleted or not yet created."
-            )
+        return blogRepository.findOneById(id).toBlogInfoResponse()
     }
 
     @Transactional
@@ -91,7 +89,7 @@ class BlogService(
         blogRepository.delete(foundBlog)
     }
 
-    private fun hasRightsToModify(
+    fun hasRightsToModify(
         editorUsername: String,
         blogId: Long
     ): Pair<User, Blog> {
@@ -104,7 +102,6 @@ class BlogService(
                             "the authority to modify blog with id: ${it.id}"
                 )
             }
-
         } ?: throw NoSuchElementException(
             "Blog with id: $blogId not found. " +
                     "It may be deleted or not created yet."

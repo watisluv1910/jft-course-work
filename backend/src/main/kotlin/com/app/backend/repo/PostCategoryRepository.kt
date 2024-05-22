@@ -11,6 +11,8 @@ interface PostCategoryRepository: BaseRepository<PostCategory> {
 
     fun existsByCategoryName(categoryName: String): Boolean
 
+    fun findFirstByCategoryNameIgnoreCase(categoryName: String): PostCategory?
+
     fun findAllByCategoryNameIsContainingIgnoreCase(categoryName: String): MutableList<PostCategory>?
 
     fun findAllByCategoryNameIn(categoryNames: MutableSet<String>): MutableList<PostCategory>?

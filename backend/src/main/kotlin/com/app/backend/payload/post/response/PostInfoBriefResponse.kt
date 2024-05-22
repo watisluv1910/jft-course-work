@@ -2,6 +2,7 @@ package com.app.backend.payload.post.response
 
 import com.app.backend.model.post.EPostStatus
 import com.app.backend.model.post.Post
+import com.app.backend.payload.user.response.UserInfoBriefResponse
 import java.util.*
 
 /**
@@ -10,17 +11,19 @@ import java.util.*
 data class PostInfoBriefResponse(
     val id: Long,
     val status: EPostStatus,
-    val postTitle: String,
-    val postLikeCount: Long,
+    val likedUsersId: List<Long>,
     val creationDate: Date,
-    val categories: List<String>
+    val author: UserInfoBriefResponse,
+    val categories: List<String>,
+    val title: String
 )
 
 fun Post.toPostInfoBriefResponse() = PostInfoBriefResponse(
     id!!,
     postStatus,
-    postTitle,
-    postLikeCount,
+    likes.map { it.user.id!! },
     creationDate,
-    categories.map { it.categoryName }
+    UserInfoBriefResponse.build(blog.author),
+    categories.map { it.categoryName },
+    postTitle
 )
