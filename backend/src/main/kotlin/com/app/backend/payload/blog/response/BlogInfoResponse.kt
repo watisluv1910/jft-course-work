@@ -1,7 +1,9 @@
 package com.app.backend.payload.blog.response
 
 import com.app.backend.model.Blog
-import com.app.backend.payload.user.response.UserInfoBriefResponse
+import com.app.backend.payload.post.response.PostInfoBriefResponse
+import com.app.backend.payload.post.response.toPostInfoBriefResponse
+import com.app.backend.payload.user.response.UserInfoResponse
 import java.sql.Timestamp
 
 /**
@@ -12,8 +14,9 @@ data class BlogInfoResponse(
     val title: String,
     val description: String,
     val lastEditDate: Timestamp,
-    val author: UserInfoBriefResponse,
-    val lastEditor: UserInfoBriefResponse
+    val author: UserInfoResponse,
+    val lastEditor: UserInfoResponse,
+    val posts: List<PostInfoBriefResponse>
 )
 
 fun Blog.toBlogInfoResponse() = BlogInfoResponse(
@@ -21,6 +24,7 @@ fun Blog.toBlogInfoResponse() = BlogInfoResponse(
     title,
     description,
     lastEditDate!!,
-    UserInfoBriefResponse.build(author),
-    UserInfoBriefResponse.build(lastEditor)
+    UserInfoResponse.build(author),
+    UserInfoResponse.build(lastEditor),
+    posts.map { it.toPostInfoBriefResponse() }
 )

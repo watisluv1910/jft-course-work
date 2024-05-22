@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BlogRepository: BaseRepository<Blog> {
 
-    fun findAllByAuthor(author: User): MutableList<Blog>?
+    fun findAllByAuthor(author: User): MutableList<Blog>
 
-    fun findAllByLastEditor(lastEditor: User): MutableList<Blog>?
-
-    fun findAllByTitleIsContainingIgnoreCase(title: String): MutableList<Blog>?
+    fun findAllByTitleIsContainingIgnoreCase(title: String): MutableList<Blog>
 }

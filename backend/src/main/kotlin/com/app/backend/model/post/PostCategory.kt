@@ -16,7 +16,7 @@ class PostCategory {
     var id: Long? = null
 
     @field:Column(name = "category_name", nullable = false, unique = true)
-    var categoryName: String? = null
+    var categoryName: String = ""
 
     @field:ManyToMany(
         mappedBy = "categories",
