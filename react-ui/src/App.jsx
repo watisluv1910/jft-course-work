@@ -71,7 +71,7 @@ export const App = () => {
                         <div className="navbar-nav mr-auto">
                             {showAdminBoard && (
                                 <li className="nav-item">
-                                    <Link to={'/test/admin'}
+                                    <Link to={'/board/admin'}
                                           className="nav-link">
                                         Admin Board
                                     </Link>
@@ -80,7 +80,7 @@ export const App = () => {
 
                             {showModeratorBoard && (
                                 <li className="nav-item">
-                                    <Link to={'/test/moderator'}
+                                    <Link to={'/board/moderator'}
                                           className="nav-link">
                                         Moderator Board
                                     </Link>
@@ -89,9 +89,9 @@ export const App = () => {
 
                             {currentUser && (
                                 <li className="nav-item">
-                                    <Link to={'/test/user'}
+                                    <Link to={'/board/author'}
                                           className="nav-link">
-                                        User Board
+                                        Author Board
                                     </Link>
                                 </li>
                             )}
@@ -154,11 +154,11 @@ export const App = () => {
                             <Route
                                 exact path="/profile"
                                 element={<Profile/>}/>
-                            <Route exact path="/test/user"
+                            <Route exact path="/board/author"
                                    element={<BoardAuthor/>}/>
-                            <Route exact path="/test/moderator"
+                            <Route exact path="/board/moderator"
                                    element={<BoardModerator/>}/>
-                            <Route exact path="/test/admin"
+                            <Route exact path="/board/admin"
                                    element={<BoardAdmin/>}/>
                         </Routes>
                     </div>
