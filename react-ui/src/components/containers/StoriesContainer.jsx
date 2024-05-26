@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getStoriesIds} from '../../services/news.service';
 import {Story} from '../Story';
 import {
-    StoriesContainerWrapper
+    StoriesContainerWrapper,
 } from '../../assets/styles/StoriesContainerStyles';
 import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';
 import {useIntersectionObserver} from '../../hooks/useIntersectionObserver';
@@ -33,7 +33,7 @@ export const StoriesContainer = () => {
     return (
         <>
             <StoriesContainerWrapper data-test-id="stories-container">
-                {storiesIds.slice(0, count).map((storyId) => (
+                {storiesIds && storiesIds.slice(0, count).map((storyId) => (
                     <Story
                         key={storyId}
                         storyId={storyId}

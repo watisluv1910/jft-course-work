@@ -1,14 +1,19 @@
 package com.app.backend.model.user
 
-import com.app.backend.model.bookmark.UserBookmark
+import com.app.backend.model.Blog
+import com.app.backend.model.bookmark.ArticleBookmark
+import com.app.backend.model.post.PostLike
+import com.app.backend.model.post.PostMeta
 import com.app.backend.model.user.role.UserRole
 import com.app.backend.model.user.token.UserRefreshToken
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
+import java.sql.Timestamp
+import java.util.*
 
 @Entity
-@Table(name = "sn_user", schema = "jft_database")
+@Table(name = "sr_user", schema = "tsr_database")
 class User {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,20 +22,23 @@ class User {
     var id: Long? = null
 
     @field:Column(name = "username", nullable = false)
-    var username: String? = null
+    var username: String = ""
 
     @field:Column(name = "password", nullable = false)
-    var password: String? = null
+    var password: String = ""
 
     @field:Column(name = "user_email", nullable = false)
-    var userEmail: String? = null
+    var userEmail: String = ""
+
+    @field:Column(name = "creation_date", nullable = false)
+    var creationDate: Timestamp = Timestamp(Date().time)
 
     @field:ManyToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH]
     )
     @field:JoinTable(
-        name = "sn_user_roles",
+        name = "sr_user_roles",
         joinColumns = [JoinColumn(
             name = "user_id",
             referencedColumnName = "id"
@@ -49,7 +57,41 @@ class User {
         cascade = [CascadeType.REMOVE]
     )
     @field:JsonManagedReference
-    var bookmarks: MutableSet<UserBookmark> = mutableSetOf()
+    var bookmarks: MutableSet<ArticleBookmark> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "author",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.ALL]
+    )
+    @field:JsonManagedReference
+    var blogs: MutableSet<Blog> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "lastEditor",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    @field:JsonIgnoreProperties
+    var lastEditedBlogs: MutableSet<Blog> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "lastEditor",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    @field:JsonIgnoreProperties
+    var lastEditedPosts: MutableSet<PostMeta> = mutableSetOf()
+
+    @field:OneToMany(
+        mappedBy = "user",
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.REMOVE]
+    )
+    @field:JsonManagedReference
+    var likes: MutableSet<PostLike> = mutableSetOf()
 
     @field:OneToOne(
         mappedBy = "user",

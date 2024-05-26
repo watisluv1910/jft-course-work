@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.sql.Timestamp
 
 @Entity
-@Table(name = "sn_jwt_refresh_token", schema = "jft_database")
+@Table(name = "sr_jwt_refresh_token", schema = "tsr_database")
 class UserRefreshToken {
 
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,8 @@ class UserRefreshToken {
     @field:Column(name = "token", nullable = false)
     var token: String = ""
 
-    @field:Column(name = "date_expiration", nullable = false)
-    var dateExpiration: Timestamp? = null
+    @field:Column(name = "expiration_date", nullable = false)
+    lateinit var expirationDate: Timestamp
 
     @field:OneToOne(fetch = FetchType.LAZY)
     @field:JoinColumn(name = "user_id", referencedColumnName = "id")

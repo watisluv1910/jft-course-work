@@ -12,9 +12,9 @@ module.exports = {
         app: path.resolve(__dirname, './src/index.js'),
     },
     output: {
-         // Directory to export bundle in:
+        // Directory to export bundle in:
         path: path.resolve(__dirname, './build'),
-
+        publicPath: '/',
         // With each new build hash will be added
         // to filename for better loading speed:
         filename: production ?
@@ -88,8 +88,6 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].[ext]',
-                            outputPath: 'assets/images/',
-                            publicPath: 'assets/images/',
                         },
                     },
                 ],
@@ -118,7 +116,7 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: 'all',
-        }
+        },
     },
     devServer: {
         port: 3000,
@@ -130,6 +128,7 @@ module.exports = {
                 withCredentials: true,
             },
         },
+        historyApiFallback: true,
     },
     devtool: 'source-map',
     mode: production ? 'production' : 'development',

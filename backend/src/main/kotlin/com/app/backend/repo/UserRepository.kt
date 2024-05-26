@@ -22,7 +22,7 @@ interface UserRepository: BaseRepository<User> {
      * @param username the username to search for.
      * @return [User] associated with the given username, null if not found.
      */
-    fun findByUsername(username: String?): User?
+    fun findByUsername(username: String): User?
 
     /**
      * Finds a user by their username, throws an exception if not found.
@@ -31,7 +31,7 @@ interface UserRepository: BaseRepository<User> {
      * @return [User] associated with the given username.
      * @throws UsernameNotFoundException if the user with the specified username is not found.
      */
-    fun findOneByUsername(username: String?): User {
+    fun findOneByUsername(username: String): User {
         return findByUsername(username)
             ?: throw UsernameNotFoundException("User with username $username not found")
     }
@@ -42,7 +42,7 @@ interface UserRepository: BaseRepository<User> {
      * @param username the username to check.
      * @return true if a user with the given username exists, false otherwise.
      */
-    fun existsByUsername(username: String?): Boolean
+    fun existsByUsername(username: String): Boolean
 
     /**
      * Checks if a user with the specified email exists.
@@ -50,5 +50,5 @@ interface UserRepository: BaseRepository<User> {
      * @param userEmail the email to check.
      * @return true if a user with the given email exists, false otherwise.
      */
-    fun existsByUserEmail(userEmail: String?): Boolean
+    fun existsByUserEmail(userEmail: String): Boolean
 }

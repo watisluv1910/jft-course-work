@@ -17,7 +17,9 @@ module.exports = {
     ],
     'rules': {
         'indent': 'off',
+        'react/prop-types': 'off',
         'react/react-in-jsx-scope': 'off',
+        'max-len': 'off',
         'linebreak-style':
             ['error', process.platform === 'win32' ? 'windows' : 'unix'],
     },

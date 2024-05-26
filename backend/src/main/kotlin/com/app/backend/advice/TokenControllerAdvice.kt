@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import java.sql.Timestamp
+import java.util.*
 
 /**
  * Advice class for handling token-related exceptions.
@@ -35,7 +36,7 @@ class TokenControllerAdvice {
     ): TokenRefreshExceptionResponse {
         return TokenRefreshExceptionResponse(
             HttpStatus.FORBIDDEN.value(),
-            Timestamp(System.currentTimeMillis()),
+            Timestamp(Date().time),
             e.message ?: "No message provided",
             request.getDescription(false)
         )

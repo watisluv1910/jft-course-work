@@ -6,6 +6,7 @@ import com.app.backend.security.handler.UnauthorizedExceptionHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -50,7 +51,7 @@ class SecurityConfig(
             csrf {
                 disable()
             }
-            cors {  }
+            cors { }
             exceptionHandling {
                 authenticationEntryPoint = unauthorizedExceptionHandler
             }
@@ -60,6 +61,7 @@ class SecurityConfig(
             authorizeHttpRequests {
                 authorize("/", permitAll)
                 authorize("/api/auth/**", permitAll)
+                authorize(HttpMethod.GET, "/api/blog/**", permitAll)
                 authorize(anyRequest, authenticated)
             }
             logout {
@@ -79,7 +81,9 @@ class SecurityConfig(
                     )
                 )
             }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(authenticationFilter)
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(
+                authenticationFilter
+            )
             addFilterBefore<AuthenticationFilter>(accessTokenExpirationFilter)
         }
 

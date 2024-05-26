@@ -34,7 +34,6 @@ export const GlobalStyle = createGlobalStyle`
 
   html {
     // font-size: 62.5%; // 1rem = 10px (62.5% of 16px)
-    background: var(--clr-surface);
   }
   
   html:focus-within {

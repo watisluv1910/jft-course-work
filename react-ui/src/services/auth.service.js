@@ -29,9 +29,16 @@ const authUrl = `/auth/`;
  * @return {Promise<AxiosResponse<any>>} Axios promise
  * that returns the server's response.
  */
-const register = function (username, userEmail, password) {
+const register = function(
+    username,
+    userEmail,
+    password,
+) {
     return api.post(authUrl + 'register', {
-        username, userEmail, password, roles: ['ROLE_USER', 'ROLE_MODERATOR'],
+        username,
+        userEmail,
+        password,
+        roles: ['ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN'],
     }).catch((e) => console.error(e.message));
 };
 
@@ -45,20 +52,20 @@ const register = function (username, userEmail, password) {
  * @return {Promise<object>} A promise that resolves
  * with the authenticated user's data.
  */
-const login = function (username, password) {
+const login = function(username, password) {
     return api.post(authUrl + 'login', {
         username, password,
     }).then((response) => {
         if (response.data.user) {
             localStorage.setItem(
                 'user',
-                JSON.stringify(response.data.user)
+                JSON.stringify(response.data.user),
             );
         }
         if (response.data.refreshTokenExpirationDate) {
             localStorage.setItem(
                 'refresh-token_expiration',
-                JSON.stringify(response.data.refreshTokenExpirationDate)
+                JSON.stringify(response.data.refreshTokenExpirationDate),
             );
         }
         return response.data;
@@ -73,7 +80,7 @@ const login = function (username, password) {
  * @return {Promise<object>} A promise that resolves
  * with the server's response data.
  */
-const logout = async function () {
+const logout = async function() {
     try {
         await api.post(authUrl + 'logout');
     } catch (error) {
@@ -88,15 +95,15 @@ const logout = async function () {
  * @return {object|null} The user data or null
  * if no user data exists in local storage.
  */
-const getCurrentUser = function () {
+const getCurrentUser = function() {
     return JSON.parse(localStorage.getItem('user'));
-}
+};
 
-const getRefreshTokenExpiration = function () {
+const getRefreshTokenExpiration = function() {
     return JSON.parse(localStorage.getItem('refresh-token_expiration'));
-}
+};
 
-const isRefreshTokenExpired = function () {
+const isRefreshTokenExpired = function() {
     if (localStorage.getItem('refresh-token_expiration') !== null) {
         return getRefreshTokenExpiration() < Date.now();
     }
@@ -110,5 +117,5 @@ export const AuthService = {
     logout,
     getCurrentUser,
     getRefreshTokenExpiration,
-    isRefreshTokenExpired
+    isRefreshTokenExpired,
 };

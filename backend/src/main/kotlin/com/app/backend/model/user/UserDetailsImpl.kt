@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.sql.Timestamp
 
 /**
  * Custom implementation of Spring Security's [UserDetails].
@@ -24,6 +25,8 @@ class UserDetailsImpl: UserDetails {
     @get: JvmName("get_password")
     @field:JsonIgnore
     var password: String? = null
+
+    var creationDate: Timestamp? = null
 
     @get: JvmName("get_authorities")
     var authorities: MutableCollection<out GrantedAuthority>? = null
@@ -54,6 +57,7 @@ class UserDetailsImpl: UserDetails {
                 username = user.username
                 email = user.userEmail
                 password = user.password
+                creationDate = user.creationDate
                 this.authorities = authorities
             }
         }

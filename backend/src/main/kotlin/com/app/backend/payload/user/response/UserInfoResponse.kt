@@ -14,8 +14,8 @@ data class UserInfoResponse(
         fun build(user: User) =
             UserInfoResponse(
                 user.id!!,
-                user.username!!,
-                user.userEmail!!,
+                user.username,
+                user.userEmail,
                 user.roles.map { it.roleName }
             )
     }

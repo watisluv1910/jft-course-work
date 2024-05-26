@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import bookmarkIconOutline from '../assets/icons/bookmark_icon_outline.png';
-import bookmarkIconFilled from '../assets/icons/bookmark_icon_filled.png';
-import {BookmarkService} from '../services/bookmark.service';
-import {useBookmarksContext} from '../contexts/useBookmarksContext';
+import bookmarkIconOutline from '../../assets/icons/bookmark_icon_outline.png';
+import bookmarkIconFilled from '../../assets/icons/bookmark_icon_filled.png';
+import {BookmarkService} from '../../services/bookmark.service';
+import {useBookmarksContext} from '../../context/useBookmarksContext';
 
 /**
- * The BookmarkButton component is used to bookmark a story.
+ * The ArticleBookmarkButton component is used to bookmark a story.
  * It uses the 'useBookmarksContext' hook to provide bookmark state management.
  * If the story is already bookmarked, it displays a filled bookmark icon,
  * otherwise an outline.
@@ -15,12 +15,12 @@ import {useBookmarksContext} from '../contexts/useBookmarksContext';
  * @component
  * @param {Object} props - Component props
  * @param {Object} props.story - Story object to be bookmarked
- * @return {React.Element} The rendered BookmarkButton component.
+ * @return {React.Element} The rendered ArticleBookmarkButton component.
  * @example
- * <BookmarkButton story={story} />
+ * <ArticleBookmarkButton story={story} />
  * @author Vladislav Nasevich
  */
-export const BookmarkButton = ({story}) => {
+export const ArticleBookmarkButton = ({story}) => {
     const {bookmarks, setBookmarks} = useBookmarksContext();
 
     const isBookmarked = () => bookmarks.some(
@@ -66,17 +66,19 @@ export const BookmarkButton = ({story}) => {
     };
 
     return (
-        <button onClick={handleBookmarkClick}
-                style={{border: 'none', background: 'none'}}>
+        <button
+            className={'border-0 bg-transparent'}
+            onClick={handleBookmarkClick}
+        >
             <img
                 src={getBookmarkIcon()}
                 alt="Bookmark"
-                style={{width: '24px', aspectRatio: '1 / 1'}}
+                style={{width: 24, maxWidth: 24, aspectRatio: '1 / 1'}}
             />
         </button>
     );
 };
 
-BookmarkButton.propTypes = {
+ArticleBookmarkButton.propTypes = {
     story: PropTypes.object.isRequired,
 };

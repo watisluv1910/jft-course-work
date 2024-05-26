@@ -2,8 +2,7 @@ package com.app.backend.security.utils
 
 import jakarta.servlet.http.Cookie
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 
 /**
@@ -33,7 +32,7 @@ class CookieUtils {
                     part.startsWith("Expires=") -> {
                         val expiresDate = part.substringAfter("Expires=")
                         val expiresMillis = parseHttpDate(expiresDate)
-                        val maxAge = (expiresMillis - System.currentTimeMillis()) / 1000
+                        val maxAge = (expiresMillis - Date().time) / 1000
                         cookie.maxAge = maxAge.toInt()
                     }
                     part == "Secure" -> cookie.secure = true
