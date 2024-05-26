@@ -62,7 +62,7 @@ class User {
     @field:OneToMany(
         mappedBy = "author",
         fetch = FetchType.EAGER,
-        cascade = [CascadeType.REMOVE]
+        cascade = [CascadeType.ALL]
     )
     @field:JsonManagedReference
     var blogs: MutableSet<Blog> = mutableSetOf()

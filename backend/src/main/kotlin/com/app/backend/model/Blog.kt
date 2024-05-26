@@ -42,8 +42,15 @@ class Blog {
     @field:OneToMany(
         mappedBy = "blog",
         fetch = FetchType.EAGER,
-        cascade = [CascadeType.REMOVE]
+        cascade = [CascadeType.REMOVE],
+        orphanRemoval = true
     )
     @field:JsonManagedReference
     var posts: MutableSet<Post> = mutableSetOf()
+
+    @PreRemove
+    fun preRemove() {
+        author.blogs.remove(this)
+        lastEditor.blogs.remove(this)
+    }
 }

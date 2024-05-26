@@ -71,4 +71,12 @@ class Post {
     )
     @field:JsonManagedReference
     var likes: MutableSet<PostLike> = mutableSetOf()
+
+    @PreRemove
+    fun preRemove() {
+        categories.forEach {
+            it.posts.removeIf { post -> post.id == this.id }
+        }
+        blog.posts.remove(this)
+    }
 }
