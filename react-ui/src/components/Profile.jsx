@@ -1,4 +1,5 @@
-import {ArticleBookmarksContainer} from './containers/ArticleBookmarksContainer';
+import {ArticleBookmarksContainer}
+    from './containers/ArticleBookmarksContainer';
 import {useLocation} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -29,7 +30,7 @@ export const Profile = () => {
             </div>
             <div className="card mt-3 mb-3">
                 <div className="card-header text-center">
-                    <h3 className={"d-inline"}>Saved news</h3>
+                    <h3 className={'d-inline'}>Saved news</h3>
                 </div>
                 <div className="card-body">
                     <ArticleBookmarksContainer/>

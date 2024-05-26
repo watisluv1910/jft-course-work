@@ -12,7 +12,7 @@ import {GlobalStyle} from './assets/styles/ResetStyles';
 import {BoardModerator} from './components/boards/BoardModerator';
 import {BoardAuthor} from './components/boards/BoardAuthor';
 import {BoardAdmin} from './components/boards/BoardAdmin';
-import {ArticleBookmarkService} from './services/articleBookmarkService';
+import {BookmarkService} from './services/bookmark.service';
 import {ArticleBookmarksContext} from './context/useBookmarksContext';
 import sunIcon from './assets/icons/sun_favicon_round.png';
 
@@ -30,7 +30,7 @@ export const App = () => {
             setShowModeratorBoard(user.roles.includes('ROLE_MODERATOR'));
             setShowAdminBoard(user.roles.includes('ROLE_ADMIN'));
 
-            ArticleBookmarkService
+            BookmarkService
                 .getUserBookmarks()
                 .then((data) => setBookmarks(data));
         }

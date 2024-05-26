@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import bookmarkIconOutline from '../../assets/icons/bookmark_icon_outline.png';
 import bookmarkIconFilled from '../../assets/icons/bookmark_icon_filled.png';
-import {ArticleBookmarkService} from '../../services/articleBookmarkService';
+import {BookmarkService} from '../../services/bookmark.service';
 import {useBookmarksContext} from '../../context/useBookmarksContext';
 
 /**
@@ -36,8 +36,8 @@ export const ArticleBookmarkButton = ({story}) => {
 
     const addBookmark = async (story) => {
         try {
-            await ArticleBookmarkService.addBookmark(story).then(async () => {
-                setBookmarks(await ArticleBookmarkService.getUserBookmarks());
+            await BookmarkService.addBookmark(story).then(async () => {
+                setBookmarks(await BookmarkService.getUserBookmarks());
             });
         } catch (error) {
             console.error('Error adding bookmark: ', error);
@@ -50,7 +50,7 @@ export const ArticleBookmarkButton = ({story}) => {
 
         for (const currentStoryBookmark of currentStoryBookmarks) {
             try {
-                await ArticleBookmarkService
+                await BookmarkService
                     .deleteBookmark(currentStoryBookmark.id)
                     .then(() => {
                         setBookmarks(
@@ -67,7 +67,7 @@ export const ArticleBookmarkButton = ({story}) => {
 
     return (
         <button
-            className={"border-0 bg-transparent"}
+            className={'border-0 bg-transparent'}
             onClick={handleBookmarkClick}
         >
             <img
