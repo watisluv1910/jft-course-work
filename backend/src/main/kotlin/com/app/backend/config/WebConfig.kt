@@ -27,7 +27,8 @@ class WebConfig : WebMvcConfigurer {
         registry
             .addMapping("/api/**")
             .allowedOriginPatterns(
-                "http://localhost:$frontendPort"
+                "http://localhost:$frontendPort",
+                "http://95.164.7.153:$frontendPort", // TODO: Rework
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .maxAge(1800)
