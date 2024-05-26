@@ -101,7 +101,7 @@ class TokenUtils(
             .path(path)
             .maxAge(refreshTokenExpirationMs.toLong() / 1000)
             .httpOnly(true)
-            .secure(true)
+            .secure(false) // TODO: Rework
             .build()
     }
 
