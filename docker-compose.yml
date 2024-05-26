@@ -1,5 +1,9 @@
 x-defaults: &defaults
-  env_file: ${ENV_FILE:-.env.example}
+  env_file:
+    - path: .env.example
+      required: true
+    - path: .env
+      required: false
 
 services:
 
@@ -45,7 +49,7 @@ services:
       context: mysql-database
       dockerfile: Dockerfile
       args:
-        DB_SCHEMA: ${MYSQL_DATABASE:-jft_database}
+        DB_SCHEMA: ${MYSQL_DATABASE:-tsr_database}
     expose:
       - "${DB_DEFAULT_PORT:-3306}"
     restart: no
