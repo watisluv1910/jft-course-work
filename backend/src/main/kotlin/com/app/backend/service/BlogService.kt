@@ -34,8 +34,8 @@ class BlogService(
 
         val savedBlog = blogRepository.save(
             Blog().apply {
-                title = request.blogTitle
-                description = request.blogDescription
+                title = request.title.lowercase().capitalizeWords()
+                description = request.description
                 author = foundAuthor
                 lastEditor = foundAuthor
             }
@@ -73,8 +73,8 @@ class BlogService(
         val (foundUser, foundBlog) = hasRightsToModify(editorUsername, blogId)
 
         val updatedBlog = foundBlog.apply {
-            title = request.blogTitle
-            description = request.blogDescription
+            title = request.title.capitalizeWords()
+            description = request.description
             lastEditor = foundUser
             lastEditDate = Timestamp(Date().time)
         }
@@ -114,4 +114,10 @@ class BlogService(
 
 private fun User.canNotModify(blog: Blog) =
     this.username != blog.author.username &&
-            !this.roles.map { r -> r.roleName }.contains(EUserRole.ROLE_MODERATOR)
+            !this.roles.map { r -> r.roleName }
+                .contains(EUserRole.ROLE_MODERATOR)
+
+fun String.capitalizeWords(): String =
+    split(" ")
+        .map { w -> w.lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) } }
+        .joinToString(" ")
