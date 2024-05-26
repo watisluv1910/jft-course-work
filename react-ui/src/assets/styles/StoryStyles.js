@@ -6,6 +6,7 @@ export const StoryWrapper = styled.section`
 
     &:first-of-type {
         border-top: 0;
+        padding-top: 0;
     }
 
     &:last-of-type {
@@ -23,7 +24,7 @@ export const StoryTitle = styled.h1`
 
     display: flex;
     justify-content: space-between;
-    
+
     gap: 1rem;
 
     a {
@@ -32,6 +33,10 @@ export const StoryTitle = styled.h1`
         background-color: unset;
         padding: 5px 0;
         border-radius: 4px;
+
+        &:hover {
+            color: #000092;
+        }
     }
 `;
 

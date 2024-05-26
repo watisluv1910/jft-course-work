@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getStoriesIds} from '../../services/news.service';
 import {Story} from '../Story';
 import {
-    StoriesContainerWrapper
+    StoriesContainerWrapper,
 } from '../../assets/styles/StoriesContainerStyles';
 import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';
 import {useIntersectionObserver} from '../../hooks/useIntersectionObserver';
