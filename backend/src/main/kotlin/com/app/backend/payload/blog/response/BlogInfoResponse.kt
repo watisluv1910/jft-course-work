@@ -26,5 +26,7 @@ fun Blog.toBlogInfoResponse() = BlogInfoResponse(
     lastEditDate!!,
     UserInfoResponse.build(author),
     UserInfoResponse.build(lastEditor),
-    posts.map { it.toPostInfoBriefResponse() }
+    posts
+        .sortedByDescending { it.creationDate }
+        .map { it.toPostInfoBriefResponse() }
 )
