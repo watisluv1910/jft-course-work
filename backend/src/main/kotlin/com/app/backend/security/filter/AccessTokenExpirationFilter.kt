@@ -34,8 +34,6 @@ class AccessTokenExpirationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        logger.info("Access token filter call: ${request.requestURL}")
-
         try {
             val accessToken = tokenUtils.getAccessTokenFromCookies(request)
 
