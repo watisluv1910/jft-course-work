@@ -15,6 +15,11 @@ import {BoardAdmin} from './components/boards/BoardAdmin';
 import {BookmarkService} from './services/bookmark.service';
 import {ArticleBookmarksContext} from './context/useBookmarksContext';
 import sunIcon from './assets/icons/sun_favicon_round.png';
+import {BlogsContainer} from './components/containers/BlogsContainer';
+import {BlogDetails} from './components/blog/BlogDetails';
+import {PostDetails} from './components/post/PostDetails';
+import {PostEditor} from './components/post/PostEditor';
+import {BlogEditor} from './components/blog/BlogEditor';
 
 export const App = () => {
     const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -69,6 +74,13 @@ export const App = () => {
                             The Sun News Stories
                         </Link>
                         <div className="navbar-nav mr-auto">
+                            <li className="nav-item">
+                                <Link to={'/blogs'}
+                                      className="nav-link">
+                                    Blogs
+                                </Link>
+                            </li>
+
                             {showAdminBoard && (
                                 <li className="nav-item">
                                     <Link to={'/board/admin'}
@@ -113,7 +125,13 @@ export const App = () => {
                                     <a
                                         href="/"
                                         className="nav-link"
-                                        onClick={() => eventBus.dispatch('logout', null)}
+                                        onClick={
+                                            () => eventBus
+                                                .dispatch(
+                                                    'logout',
+                                                    null,
+                                                )
+                                        }
                                     >
                                         Logout
                                     </a>
@@ -138,12 +156,39 @@ export const App = () => {
                         )}
                     </nav>
 
-
-                    <div className={"mt-4"}>
+                    <div className={'mt-4'}>
                         <Routes>
                             <Route
                                 exact path={'/'}
                                 element={<StoriesContainer/>}
+                            />
+                            <Route
+                                exact path={'/blogs'}
+                                element={<BlogsContainer/>}
+                            />
+                            <Route
+                                exact path={'/blogs/:id/*'}
+                                element={<BlogDetails/>}
+                            />
+                            <Route
+                                exact path={'/blogs/add'}
+                                element={<BlogEditor isInEditMode={false}/>}
+                            />
+                            <Route
+                                exact path={'/blogs/:id/edit'}
+                                element={<BlogEditor isInEditMode={true}/>}
+                            />
+                            <Route
+                                exact path={'/blogs/:blogId/posts/add'}
+                                element={<PostEditor isInEditMode={false}/>}
+                            />
+                            <Route
+                                exact path={'/blogs/:blogId/posts/:postId/edit'}
+                                element={<PostEditor isInEditMode={true}/>}
+                            />
+                            <Route
+                                exact path={'/blogs/:blogId/posts/:postId'}
+                                element={<PostDetails/>}
                             />
                             <Route
                                 exact path="/login"
