@@ -1,6 +1,6 @@
 FROM alpine AS build
 
-ARG DB_SCHEMA=jft_database
+ARG DB_SCHEMA=tsr_database
 
 COPY schema.sql .
 
