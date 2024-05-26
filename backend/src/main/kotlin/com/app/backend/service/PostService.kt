@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 import java.sql.Timestamp
 import java.util.*
-import kotlin.NoSuchElementException
 
 @Service
 class PostService(
@@ -41,7 +40,7 @@ class PostService(
         val savedCategories = getSavedCategories(request.categories)
 
         val post = Post().apply {
-            postTitle = request.title
+            postTitle = request.title.capitalizeWords()
             postDescription = request.description
             blog = foundBlog
             categories = savedCategories.toMutableSet()
@@ -83,7 +82,7 @@ class PostService(
         )
 
         val updatedPost = foundBlog.posts.find { it.id == postId }?.apply {
-            postTitle = request.title
+            postTitle = request.title.capitalizeWords()
             postDescription = request.description
             categories = getSavedCategories(request.categories).toMutableSet()
             postMeta.postBody = request.content
@@ -123,7 +122,7 @@ class PostService(
         blogId: Long,
         postId: Long,
         username: String
-    ): PostLikeInfoResponse {
+    ): PostLikesInfoResponse {
         val foundUser = userRepository.findOneByUsername(username)
         val foundPost =
             blogRepository.findOneById(blogId).posts.find { it.id == postId }
@@ -133,9 +132,11 @@ class PostService(
                 )
 
         if (isLikedBy(foundPost, foundUser))
-            throw EntityExistsException("Can't add like to post with " +
-                    "id: $postId in blog with " +
-                    "id: $blogId. Post is already liked by user $username")
+            throw EntityExistsException(
+                "Can't add like to post with " +
+                        "id: $postId in blog with " +
+                        "id: $blogId. Post is already liked by user $username"
+            )
 
         val savedLike = postLikeRepository.save(
             PostLike().apply {
@@ -144,11 +145,17 @@ class PostService(
             }
         )
 
-        return savedLike.toPostLikeInfoResponse()
+        foundPost.likes.add(savedLike)
+
+        return foundPost.toPostLikesInfoResponse()
     }
 
     @Transactional
-    fun dislikePost(blogId: Long, postId: Long, username: String) {
+    fun dislikePost(
+        blogId: Long,
+        postId: Long,
+        username: String
+    ): PostLikesInfoResponse {
         val foundUser = userRepository.findOneByUsername(username)
         val foundPost =
             blogRepository.findOneById(blogId).posts.find { it.id == postId }
@@ -158,11 +165,17 @@ class PostService(
                 )
 
         if (!isLikedBy(foundPost, foundUser))
-            throw NoSuchElementException("Can't remove like from post with " +
-                    "id: $postId in blog with " +
-                    "id: $blogId. Post is not liked by user $username")
+            throw NoSuchElementException(
+                "Can't remove like from post with " +
+                        "id: $postId in blog with " +
+                        "id: $blogId. Post is not liked by user $username"
+            )
 
         postLikeRepository.deleteByPostAndUser(foundPost, foundUser)
+
+        foundPost.likes.retainAll { it.user != foundUser }
+
+        return foundPost.toPostLikesInfoResponse()
     }
 
     private fun isLikedBy(
